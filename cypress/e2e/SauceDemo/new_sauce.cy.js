@@ -1,0 +1,63 @@
+/// <reference types="cypress" />
+
+
+
+import { ElementosLogin } from "../../support/pages/login/elementos.cy"
+import Metodos from "../../support/pages/login/metodos"
+
+
+
+//Rodar classe específica de testes = npx cypress run --spec cypress/e2e/1-getting-started/sauce.cy.js
+
+/*
+"merge:reports": "mochawesome-merge mochawesome-report/*.json > cypress-combined-report.json",
+"create:html:report": "npm run merge:reports && marge --reportDir TestReport cypress-combined-report.json"
+
+
+npm run create:html:report
+
+npm run test:cli
+
+*/
+
+//Funcionalidade geral do teste
+describe('Regressivo no site saucedemo.com', () => {
+
+before(() =>{
+
+    Metodos.acessarURL()
+
+})
+    //Caso de teste    
+    
+context('Testar erros de login', () => {
+    const username_err='notepad'
+    const senha_err='visual'
+
+//Tentar logar apenas preenchendo o campo username
+it('Tentar logar apenas preenchendo o campo username', () =>{
+
+    Metodos.digitar(ElementosLogin.campo_username,'standard_user')
+    Metodos.clicar(ElementosLogin.btn_login)
+    Metodos.validar_attr(ElementosLogin.erro_login,'data-test','error')
+    Metodos.validar_texto(ElementosLogin.msg_erro_login,'Epic sadface: Password is required')
+    Metodos.deletar(ElementosLogin.campo_username)
+})
+
+it('Tentar logar apenas preenchendo o campo password', () =>{
+
+Metodos.digitar(ElementosLogin.campo_senha,'secret_sauce')
+Metodos.clicar(ElementosLogin.btn_login)
+Metodos.validar_attr(ElementosLogin.erro_login,'data-test','error')
+Metodos.validar_texto(ElementosLogin.msg_erro_login,'Epic sadface: Username is required')
+Metodos.deletar(ElementosLogin.campo_senha)
+
+
+})
+
+
+
+
+})
+
+})
