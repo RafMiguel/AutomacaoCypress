@@ -4,6 +4,8 @@ import { it } from "mocha";
 import {
   ElementosLogin,
   ElementosProdutos,
+  ElementosCarrinho,
+  ElementosCheckout,
 } from "../../support/pages/login/elementos.cy";
 import Metodos from "../../support/pages/login/metodos.js";
 
@@ -23,7 +25,7 @@ npm run test:cli
 //Funcionalidade geral do teste
 describe("Regressivo no site saucedemo.com", () => {
   before(() => {
-    cy.visit("/");
+    cy.visit("https://www.saucedemo.com/");
     Cypress.Cookies.defaults({
       preserve: "session-username",
     });
@@ -90,7 +92,7 @@ describe("Regressivo no site saucedemo.com", () => {
         "e2231a"
       );
       Metodos.clicar(ElementosLogin.btn_login);
-      Metodos.validar_texto(ElementosProdutos.titulo_produto, "Products");
+      Metodos.validar_texto(ElementosProdutos.titulo_pagina, "Products");
     });
   });
 
@@ -147,8 +149,152 @@ describe("Regressivo no site saucedemo.com", () => {
   context("Validar produtos no carrinho", () => {
     it("Adicionar e remover um produto do carrinho", () => {
       Metodos.clicar(ElementosProdutos.btn_add_to_cart);
-      Metodos.validar_texto(ElementosProdutos.carrinho, "1");
+      Metodos.validar_texto(ElementosProdutos.carrinho_qtd_produtos, "1");
       Metodos.clicar(ElementosProdutos.btn_remove);
+    });
+  });
+
+  context("Validar carrinho", () => {
+    it("Validar estáticos na página do carrinho", () => {
+      //Linha 159 = Adicionado novamente um produto no carrinho para seguir com o fluxo de pagamento
+      Metodos.clicar(ElementosProdutos.btn_add_to_cart);
+      Metodos.clicar(ElementosProdutos.btn_carrinho);
+      Metodos.validar_texto(ElementosProdutos.titulo_pagina, "Your Cart");
+      Metodos.validar_texto(ElementosCarrinho.titulo_qtd, "QTY");
+      Metodos.validar_texto(ElementosCarrinho.titulo_descricao, "DESCRIPTION");
+    });
+
+    it("Validar produto na página do carrinho", () => {
+      let descricao =
+        "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.";
+      Metodos.validar_texto(ElementosCarrinho.qtd_carrinho, "1");
+      Metodos.validar_produto_pag_carrinho(
+        ElementosCarrinho.container_item_carrinho,
+        ElementosProdutos.ordem_produto_az,
+        "id",
+        "item_4_title_link",
+        ElementosCarrinho.nome_produto,
+        "Sauce Labs Backpack",
+        ElementosCarrinho.descricao_produto,
+        descricao,
+        ElementosCarrinho.container_preco,
+        ElementosCarrinho.preco_produto,
+        "$29.99"
+      );
+    });
+    it('Validar botões "Remove","Continue Shopping" e "Checkout"', () => {
+      Metodos.clicar_xpath(ElementosCarrinho.btn_remove);
+      Metodos.clicar(ElementosCarrinho.btn_continue_shopping);
+      //Linhas 188 e 189 = Será adicionado novamente um produto ao carrinho para aproveitarmos a interação com o botão "Checkout" e seguir para a tela de pagamento
+      Metodos.clicar(ElementosProdutos.btn_add_to_cart);
+      Metodos.clicar(ElementosProdutos.btn_carrinho);
+      Metodos.clicar(ElementosCarrinho.btn_checkout);
+    });
+  });
+
+  context("Validar página de checkout", () => {
+    it("Validar ação do botão cancelar", () => {
+      Metodos.clicar(ElementosCheckout.btn_cancelar);
+      //Botão cancelar volta para a página do carrinho. Para validar o funcionamento correto do botão cancelar, validaremos na linha seguinte o título da página do carrinho ("Your Cart")
+      Metodos.validar_texto(ElementosProdutos.titulo_pagina, "Your Cart");
+      //Após a validação do funcionamento correto do botão cancelar, nas cinco linhas seguintes iremos voltar para a página de produtos para adicionar novamente um produto no carrinho para seguirmos com a validação na página de checkout
+      Metodos.clicar(ElementosCarrinho.btn_continue_shopping);
+      Metodos.clicar(ElementosProdutos.btn_add_to_cart);
+      Metodos.clicar(ElementosProdutos.btn_carrinho);
+      Metodos.clicar(ElementosCarrinho.btn_checkout);
+      Metodos.validar_texto(
+        ElementosProdutos.titulo_pagina,
+        "Checkout: Your Information"
+      );
+    });
+
+    it("Tentar continuar inserindo apenas o primeiro nome no formulário", () => {
+      Metodos.digitar(ElementosCheckout.campo_first_name, "Raphael");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: Last Name is required"
+      );
+    });
+
+    it("Tentar continuar inserindo apenas o último nome no formulário", () => {
+      Metodos.deletar(ElementosCheckout.campo_first_name);
+      Metodos.digitar(ElementosCheckout.campo_last_name, "Kenway");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: First Name is required"
+      );
+    });
+
+    it("Tentar continuar inserindo apenas o código postal no formulário", () => {
+      Metodos.deletar(ElementosCheckout.campo_last_name);
+      Metodos.digitar(ElementosCheckout.campo_postal_code, "0001");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: First Name is required"
+      );
+    });
+
+    it("Tentar continuar inserindo apenas primeiro e último nome no formulário", () => {
+      Metodos.deletar(ElementosCheckout.campo_postal_code);
+      Metodos.digitar(ElementosCheckout.campo_first_name, "Raphael");
+      Metodos.digitar(ElementosCheckout.campo_last_name, "Kenway");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: Postal Code is required"
+      );
+    });
+    it("Tentar continuar inserindo apenas primeiro nome e código postal no formulário", () => {
+      Metodos.deletar(ElementosCheckout.campo_last_name);
+      Metodos.digitar(ElementosCheckout.campo_postal_code, "0001");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: Last Name is required"
+      );
+    });
+
+    it("Tentar continuar inserindo apenas último nome e código postal no formulário", () => {
+      Metodos.deletar(ElementosCheckout.campo_first_name);
+      Metodos.digitar(ElementosCheckout.campo_last_name, "Kenway");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+      Metodos.validar_attr(
+        ElementosCheckout.erro_continuar,
+        "data-test",
+        "error"
+      );
+      Metodos.validar_texto(
+        ElementosCheckout.erro_continuar,
+        "Error: First Name is required"
+      );
     });
   });
 });
