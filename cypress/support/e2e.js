@@ -20,6 +20,7 @@ import "cypress-mochawesome-reporter/register";
 import rgbHex from "rgb-hex";
 
 require("cypress-xpath");
+require("chai-string");
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

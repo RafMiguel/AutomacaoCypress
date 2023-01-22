@@ -5,8 +5,7 @@ import {
   ElementosLogin,
   ElementosProdutos,
 } from "../../support/pages/login/elementos.cy";
-import Metodos from "../../support/pages/login/metodos";
-import rgbHex from "rgb-hex";
+import Metodos from "../../support/pages/login/metodos.js";
 
 //Rodar classe específica de testes = npx cypress run --spec cypress/e2e/1-getting-started/sauce.cy.js
 
@@ -29,9 +28,6 @@ describe("Regressivo no site saucedemo.com", () => {
   //Caso de teste
 
   context("Testar erros de login", () => {
-    const username_err = "notepad";
-    const senha_err = "visual";
-
     //Tentar logar apenas preenchendo o campo username
     it("Tentar logar apenas preenchendo o campo username", () => {
       Metodos.digitar(ElementosLogin.campo_username, "standard_user");
@@ -92,6 +88,56 @@ describe("Regressivo no site saucedemo.com", () => {
       );
       Metodos.clicar(ElementosLogin.btn_login);
       Metodos.validar_texto(ElementosProdutos.titulo_produto, "Products");
+    });
+  });
+
+  context("Validar categorização do produto", () => {
+    it("Validar categorização do produto por nome de A-Z", () => {
+      Metodos.escolher_opcao_lista(
+        ElementosProdutos.lista_categorizacao,
+        "az",
+        "az"
+      );
+      Metodos.validar_ordenacao_produto_por_nome(
+        ElementosProdutos.container_produto,
+        ElementosProdutos.ordem_produto_az,
+        ElementosProdutos.nome_produto,
+        "id",
+        "item_4_title_link",
+        "S"
+      );
+    });
+
+    it("Validar categorização do produto por nome de Z-A", () => {
+      Metodos.escolher_opcao_lista(
+        ElementosProdutos.lista_categorizacao,
+        "za",
+        "za"
+      );
+      Metodos.validar_ordenacao_produto_por_nome(
+        ElementosProdutos.container_produto,
+        ElementosProdutos.ordem_produto_za,
+        ElementosProdutos.nome_produto,
+        "id",
+        "item_3_title_link",
+        "T"
+      );
+    });
+
+    it("Validar categorização do produto pelo menor preço", () => {
+      Metodos.escolher_opcao_lista(
+        ElementosProdutos.lista_categorizacao,
+        "lohi"
+      );
+      Metodos.validar_texto(ElementosProdutos.preco_produto, "$7.99");
+    });
+
+    it("Validar categorização do produto pelo maior preço", () => {
+      Metodos.escolher_opcao_lista(
+        ElementosProdutos.lista_categorizacao,
+        "hilo"
+      );
+      Metodos.validar_texto(ElementosProdutos.preco_produto, "$49.99");
     });
   });
 });
