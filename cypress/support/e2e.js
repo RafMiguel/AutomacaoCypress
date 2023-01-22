@@ -14,12 +14,12 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
-import '@shelex/cypress-allure-plugin';
-import 'cypress-mochawesome-reporter/register';
-require('cypress-xpath');
+import "./commands";
+import "@shelex/cypress-allure-plugin";
+import "cypress-mochawesome-reporter/register";
+import rgbHex from "rgb-hex";
 
-
+require("cypress-xpath");
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

@@ -9,10 +9,8 @@
     "generate-report": "marge cypress/reports/json/report_final.json -f report -o cypress/reports/mochareports",
     "delete:reportFolder": "rm -rf mochawesome-report/ && rm -rf videos/",
     "test:cli": "npm run delete:reportFolder && cypress run",
-    "test:gui":"npm run delete:reportFolder && npx cypress open",
-    
+    "test:gui": "npm run delete:reportFolder && npx cypress open",
     "merge:reports": "mochawesome-merge --reportDir mochawesome-report/*.json > cypress-combined-report.json"
-
   },
   "keywords": [],
   "author": "",
@@ -28,7 +26,8 @@
     "mocha": "^10.2.0",
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^4.2.2",
-    "mochawesome-report-generator": "^6.2.0"
+    "mochawesome-report-generator": "^6.2.0",
+    "rgb-hex": "^4.0.0"
   },
   "dependencies": {
     "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",

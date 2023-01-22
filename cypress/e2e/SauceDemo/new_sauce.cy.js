@@ -6,6 +6,7 @@ import {
   ElementosProdutos,
 } from "../../support/pages/login/elementos.cy";
 import Metodos from "../../support/pages/login/metodos";
+import rgbHex from "rgb-hex";
 
 //Rodar classe específica de testes = npx cypress run --spec cypress/e2e/1-getting-started/sauce.cy.js
 
@@ -23,7 +24,7 @@ npm run test:cli
 //Funcionalidade geral do teste
 describe("Regressivo no site saucedemo.com", () => {
   before(() => {
-    Metodos.acessarURL();
+    cy.visit("/");
   });
   //Caso de teste
 
@@ -80,10 +81,15 @@ describe("Regressivo no site saucedemo.com", () => {
     });
   });
 
-  context("Logar com sucesso", () => {
+  context("Logar com sucesso e validar cor do botão de login", () => {
     it("Logar com username e senha corretos", () => {
       Metodos.digitar(ElementosLogin.campo_username, "standard_user");
       Metodos.digitar(ElementosLogin.campo_senha, "secret_sauce");
+      Metodos.validar_cor(
+        ElementosLogin.btn_login,
+        "background-color",
+        "e2231a"
+      );
       Metodos.clicar(ElementosLogin.btn_login);
       Metodos.validar_texto(ElementosProdutos.titulo_produto, "Products");
     });
