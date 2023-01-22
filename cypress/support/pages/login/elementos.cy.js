@@ -17,4 +17,8 @@ export const ElementosProdutos = {
   preco_produto:
     "#inventory_container > div > div:nth-child(1) > div.inventory_item_description > div.pricebar > div",
   nome_produto: ".inventory_item_name",
+  carrinho: ".shopping_cart_badge",
+  //Botões de adicionar e remover do carrinho
+  btn_add_to_cart: "#add-to-cart-sauce-labs-backpack",
+  btn_remove: "#remove-sauce-labs-backpack",
 };

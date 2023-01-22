@@ -24,6 +24,9 @@ npm run test:cli
 describe("Regressivo no site saucedemo.com", () => {
   before(() => {
     cy.visit("/");
+    Cypress.Cookies.defaults({
+      preserve: "session-username",
+    });
   });
   //Caso de teste
 
@@ -138,6 +141,14 @@ describe("Regressivo no site saucedemo.com", () => {
         "hilo"
       );
       Metodos.validar_texto(ElementosProdutos.preco_produto, "$49.99");
+    });
+  });
+
+  context("Validar produtos no carrinho", () => {
+    it("Adicionar e remover um produto do carrinho", () => {
+      Metodos.clicar(ElementosProdutos.btn_add_to_cart);
+      Metodos.validar_texto(ElementosProdutos.carrinho, "1");
+      Metodos.clicar(ElementosProdutos.btn_remove);
     });
   });
 });
