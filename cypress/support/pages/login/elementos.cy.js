@@ -1,6 +1,11 @@
+//xpath contains example: .//div[contains(text(),"Shipping Information:")]
+//xpath have text example: './/button[text()="Remove"]'
+//xpath chained example: .//div[@class='checkout_summary_container']//button[text()="Finish"]
+
 import xpath from "cypress-xpath";
 
 export const ElementosLogin = {
+  img_swaglabs: ".login_logo",
   campo_username: '[data-test="username"]',
   campo_senha: '[data-test="password"]',
   btn_login: '[data-test="login-button"]',
@@ -10,6 +15,8 @@ export const ElementosLogin = {
 
 export const ElementosProdutos = {
   titulo_pagina: ".title",
+  btn_abrir_menu: './/button[text()="Open Menu"]',
+  btn_logout: './/a[text()="Logout"]',
   lista_categorizacao: ".product_sort_container",
   container_produto: ".inventory_item_label",
   ordem_produto_az: "#item_4_title_link",
@@ -51,4 +58,32 @@ export const ElementosCheckout = {
   btn_continuar: "#continue",
   erro_continuar: '[data-test="error"]',
   msg_erro_continuar: ".error-message-container error",
+};
+
+export const ElementosConfirmacao = {
+  //xpath
+
+  titulo_payment_info: './/div[text()="Payment Information:"]',
+  valor_payment_info: './/div[contains(text(),"SauceCard")]',
+  titulo_shipping_info: './/div[text()="Shipping Information:"]',
+  valor_shipping_info: './/div[contains(text(),"FREE")]',
+  subtitulo_valor_item: './/div[contains(text(),"Item total: $")]',
+  subtitulo_taxa_item: './/div[contains(text(),"Tax: $")]',
+
+  /*
+  resumo_info: ".sumary_info",
+  resumo_titulo: ".summary_info_label",
+  resumo_valor: ".summary_value_label",
+  resumo_subtotal: ".summary_subtotal_label",
+  resumo_taxa_valor: ".summary_tax_label",*/
+  resumo_valor: ".summary_value_label",
+  valor_total: ".summary_total_label",
+  btn_finish: './/button[text()="Finish"]',
+};
+
+export const ElementosFinish = {
+  titulo_obrigado: './/h2[text()="THANK YOU FOR YOUR ORDER"]',
+  texto_obrigado: ".complete-text",
+  imagem_saucelabs: './/img[@alt="Pony Express"]',
+  btn_voltar_home: "#back-to-products",
 };

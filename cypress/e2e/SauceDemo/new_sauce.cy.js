@@ -6,6 +6,8 @@ import {
   ElementosProdutos,
   ElementosCarrinho,
   ElementosCheckout,
+  ElementosConfirmacao,
+  ElementosFinish,
 } from "../../support/pages/login/elementos.cy";
 import Metodos from "../../support/pages/login/metodos.js";
 
@@ -26,6 +28,7 @@ npm run test:cli
 describe("Regressivo no site saucedemo.com", () => {
   before(() => {
     cy.visit("https://www.saucedemo.com/");
+
     Cypress.Cookies.defaults({
       preserve: "session-username",
     });
@@ -295,6 +298,67 @@ describe("Regressivo no site saucedemo.com", () => {
         ElementosCheckout.erro_continuar,
         "Error: First Name is required"
       );
+    });
+
+    it("Inserir corretamente o Primeiro e Segundo nome, e o Código Postal", () => {
+      Metodos.digitar(ElementosCheckout.campo_first_name, "Raphael");
+      Metodos.clicar(ElementosCheckout.btn_continuar);
+    });
+  });
+
+  context("Validar página de confirmação", () => {
+    it("Extra - Refazer compra (Alternativa encontrada para seguir com a validação da compra na última página)", () => {
+      cy.refazer_compra();
+    });
+
+    it("Finalizar compra", () => {
+      Metodos.validar_info_pagina_confirmacao(
+        ElementosConfirmacao.titulo_payment_info,
+        "Payment Information:",
+        ElementosConfirmacao.valor_payment_info,
+        "Sauce",
+        ElementosConfirmacao.titulo_shipping_info,
+        "Shipping Information:",
+        ElementosConfirmacao.valor_shipping_info,
+        "FREE PONY EXPRESS DELIVERY!",
+        ElementosConfirmacao.subtitulo_valor_item,
+        "Item total: $",
+        ElementosConfirmacao.subtitulo_taxa_item,
+        "Tax: $",
+        ElementosConfirmacao.valor_total,
+        "Total: $"
+      );
+      Metodos.validar_valor_css(
+        ElementosConfirmacao.valor_total,
+        "font-weight",
+        "800"
+      );
+
+      Metodos.clicar_xpath(ElementosConfirmacao.btn_finish);
+    });
+
+    it("Validar página de compra finalizada", () => {
+      let texto_obrigado =
+        "Your order has been dispatched, and will arrive just as fast as the pony can get there!";
+
+      Metodos.validar_texto(
+        ElementosProdutos.titulo_pagina,
+        "Checkout: Complete!"
+      );
+      Metodos.validar_texto_xpath(
+        ElementosFinish.titulo_obrigado,
+        "THANK YOU FOR YOUR ORDER"
+      );
+      Metodos.validar_texto(ElementosFinish.texto_obrigado, texto_obrigado);
+      cy.validar_imagem_saucelabs();
+      Metodos.clicar(ElementosFinish.btn_voltar_home);
+    });
+
+    it("Validar logout do site", () => {
+      Metodos.validar_texto(ElementosProdutos.titulo_pagina, "Products");
+      Metodos.clicar_xpath(ElementosProdutos.btn_abrir_menu);
+      Metodos.clicar_xpath(ElementosProdutos.btn_logout);
+      Metodos.validar_attr(ElementosLogin.img_swaglabs, "class", "login_logo");
     });
   });
 });

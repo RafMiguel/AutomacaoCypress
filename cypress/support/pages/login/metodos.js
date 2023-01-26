@@ -1,5 +1,5 @@
 import rgbHex from "rgb-hex";
-import { ElementosProdutos } from "./elementos.cy";
+import { ElementosConfirmacao, ElementosProdutos } from "./elementos.cy";
 
 const elLogin = require("./elementos.cy").ElementosLogin;
 const elProdutos = require("./elementos.cy").ElementosProdutos;
@@ -25,8 +25,16 @@ export class Metodos {
     cy.get(elemento).should("have.attr", attr, valor_atributo);
   }
 
+  validar_attr_xpath(elemento, attr, valor_atributo) {
+    cy.xpath(elemento).should("have.attr", attr, valor_atributo);
+  }
+
   validar_texto(elemento, info_esperada) {
     cy.get(elemento).should("have.text", info_esperada);
+  }
+
+  validar_texto_xpath(elemento, info_esperada) {
+    cy.xpath(elemento).should("have.text", info_esperada);
   }
 
   validar_ordenacao_produto_por_nome(
@@ -76,12 +84,53 @@ export class Metodos {
     });
   }
 
+  validar_info_pagina_confirmacao(
+    elemento_titulo_pagamento,
+    valor_titulo_pagamento,
+    elemento_info_pagamento,
+    valor_info_pagamento,
+    elemento_titulo_shipping,
+    valor_titulo_shipping,
+    elemento_info_shipping,
+    valor_info_shipping,
+    elemento_titulo_valor_item,
+    valor_item_total,
+    elemento_titulo_taxa,
+    valor_taxa,
+    elemento_valor_total,
+    valor_total
+  ) {
+    cy.xpath(elemento_titulo_pagamento).should(
+      "have.text",
+      valor_titulo_pagamento
+    );
+    cy.xpath(elemento_info_pagamento).should(
+      "contain.text",
+      valor_info_pagamento
+    );
+    cy.xpath(elemento_titulo_shipping).should(
+      "have.text",
+      valor_titulo_shipping
+    );
+    cy.xpath(elemento_info_shipping).should("have.text", valor_info_shipping);
+    cy.xpath(elemento_titulo_valor_item).should(
+      "contain.text",
+      valor_item_total
+    );
+    cy.xpath(elemento_titulo_taxa).should("contain.text", valor_taxa);
+    cy.get(elemento_valor_total).should("contain.text", valor_total);
+  }
+
   validar_cor(elemento, attr_cor, hex_esperado) {
     cy.get(elemento)
       .invoke("css", attr_cor)
       .then((color) => {
         expect(rgbHex(color)).to.eql(hex_esperado);
       });
+  }
+
+  validar_valor_css(elemento, attr_fonte, valor_fonte) {
+    cy.get(elemento).should("have.css", attr_fonte, valor_fonte);
   }
 
   clicar(elemento) {
