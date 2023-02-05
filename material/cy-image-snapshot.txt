@@ -1,0 +1,1 @@
+https://github.com/jaredpalmer/cypress-image-snapshot
