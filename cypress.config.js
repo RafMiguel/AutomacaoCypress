@@ -1,12 +1,10 @@
 const { defineConfig } = require("cypress");
-const {
-  addMatchImageSnapshotPlugin,
-} = require("cypress-image-snapshot/plugin");
+
 
 module.exports = defineConfig({
   e2e: {
-    viewportWidth: 2280,
-    viewportHeight: 1800,
+    viewportWidth: 1366,
+    viewportHeight: 768,
     baseUrl: "https://phptravels.com/",
     chromeWebSecurity: false,
 

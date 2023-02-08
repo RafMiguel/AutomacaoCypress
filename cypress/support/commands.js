@@ -1,6 +1,4 @@
-import { addMatchImageSnapshotCommand } from "cypress-image-snapshot/command";
 import { elDemo } from "./elementos";
-addMatchImageSnapshotCommand();
 
 Cypress.Commands.add("limpar", () => {
   cy.xpath(elDemo.campo_first_name).clear({ force: true });

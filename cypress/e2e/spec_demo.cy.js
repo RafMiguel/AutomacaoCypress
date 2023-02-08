@@ -1,5 +1,5 @@
 /// <reference types="cypress"/>
-
+import rgbhex from "rgb-hex"
 import { elDemo } from "../support/elementos";
 
 import dados_cliente from "../fixtures/dados_cliente.json";
@@ -98,4 +98,22 @@ describe("Validações PHPTravels", () => {
         .and("have.text", estaticos.thank_you_text);
     });
   });
+  context('Cores do formulario', () => {
+    it('Validar cor do container do formulario', () => {
+      cy.get('.demo_form.bgb.br8.p3').invoke('css','background-color').then((color) =>{
+expect(rgbhex(color)).to.eq('004bff')
+
+      })
+
+    });
+    it('Validar cor do botão submit', () => {
+      cy.xpath(elDemo.botao_submit).invoke('css','background').then((color) =>{
+expect(rgbhex(color)).to.eq('39393900')
+
+
+      })
+    });
+  });
+
+  
 });
