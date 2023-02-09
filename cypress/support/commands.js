@@ -8,5 +8,5 @@ Cypress.Commands.add("limpar", () => {
 });
 
 Cypress.Commands.add("shot", (nome) => {
-    cy.wait(500).screenshot(nome, { capture: "runner", overwrite: true });
+    cy.wait(400).screenshot(nome, { capture: "runner", overwrite: true });
 });

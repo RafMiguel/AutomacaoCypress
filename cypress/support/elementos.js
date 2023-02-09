@@ -1,10 +1,10 @@
 export const elUniversal = {
     titulo: './/h1[@class="mb-0"]',
-    sub_titulo: "mt0",
+    sub_titulo: ".mt0",
 };
 
 export const elDemo = {
-    tilulo_form: ".text-center cw tac",
+    titulo_form: ".text-center.cw.tac",
     campo_first_name: './/input[@placeholder="First Name"]',
     campo_last_name: './/input[@placeholder="Last Name"]',
     campo_business: './/input[@placeholder="Business Name"]',
