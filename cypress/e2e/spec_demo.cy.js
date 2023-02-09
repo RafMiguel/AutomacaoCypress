@@ -1,6 +1,5 @@
 /// <reference types="cypress"/>
 import rgbhex from "rgb-hex";
-import hexrgb from "hex-rgb";
 import { elDemo, elUniversal } from "../support/elementos";
 
 import dados_cliente from "../fixtures/dados_cliente.json";
@@ -71,8 +70,10 @@ describe("Validações PHPTravels", () => {
     });
 
     context("Demo - Preenchimento correto do formulário", () => {
-        it("Preencher formulário", () => {
+        before(() => {
             cy.limpar();
+        });
+        it("Preencher formulário", () => {
             //Validar título do formulário
             cy.get(elDemo.titulo_form)
                 .find("strong")
@@ -99,11 +100,13 @@ describe("Validações PHPTravels", () => {
             //Armazenar o valor dos números dentro dos elementos #numb1 e #numb2 para utiliza-los numa soma e gerar o resultado requerido
             cy.get(elDemo.digitos_resultado)
                 .find(elDemo.primeiro_digito)
+                .should("be.visible")
                 .invoke("text")
                 .then((numb1) => {
                     expect(numb1).match(/^[0-9]*$/); // Espero que a variável 'numb1' (que está armazenando o valor (texto) contido em #numb1) combine com o resultado que esteja entre 0 e 9 (/^[0-9]*$/)
                     cy.get(elDemo.digitos_resultado)
                         .find(elDemo.segundo_digito)
+                        .should("be.visible")
                         .invoke("text")
                         .then((numb2) => {
                             expect(numb2).match(/^[0-9]*$/);
@@ -115,20 +118,21 @@ describe("Validações PHPTravels", () => {
                             var result = n1_int + n2_int;
 
                             cy.get(elDemo.campo_resultado)
-                                .should("have.attr", "placeholder", "Result ?")
+                                .should("be.visible")
+                                .and("have.attr", "placeholder", "Result ?")
                                 .type(result, { force: true })
                                 .shot("6 - Demo - Formulario");
                         });
                 });
-            //cy.screenshot("Demo - Form");
-            //cy.xpath(elDemo.botao_submit).click({ force: true });
-            //cy.xpath(elDemo.titulo_thankYou)
-            //  .should("be.visible")
-            // .and("contain.text", "Thank you!");
-            //cy.xpath(elDemo.thanks_text)
-            //  .should("be.visible")
-            //.and("have.text", estaticos.thank_you_text)
-            //.shot("7 - Demo - Thank You");
+
+            cy.xpath(elDemo.botao_submit).click({ force: true });
+            cy.xpath(elDemo.titulo_thankYou)
+                .should("be.visible")
+                .and("contain.text", "Thank you!");
+            cy.xpath(elDemo.thanks_text)
+                .should("be.visible")
+                .and("have.text", estaticos.thank_you_text)
+                .shot("7 - Demo - Thank You");
         });
     });
     context("Cores do formulario", () => {
@@ -143,14 +147,12 @@ describe("Validações PHPTravels", () => {
             cy.xpath(elDemo.botao_submit)
                 .invoke("css", "background")
                 .then((color) => {
-                    //Será criada uma variável color_fix atribuindo o valor que está na cor do botão no DOM da página. Foi necessário devido ao rgbhex estar por vezes adicionando '00' ao final do código '393939', mesmo com o elemento não possuindo '00' ao final, fazendo com que o teste quebrasse.
-                    // A variavel color (capturada no DOM, que por vezes está adicionando dois 00 ao final da cor verdadeira) será
-                    var color_fix = "393939";
-                    expect(hexrgb(color)).to.eq("#ffffff");
+                    expect(rgbhex(color)).to.contains("393939");
                 });
         });
     });
-    after(() => {
-        cy.shot("End Test");
-    });
+});
+
+after(() => {
+    cy.shot("End Test");
 });

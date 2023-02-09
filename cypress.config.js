@@ -9,6 +9,7 @@ module.exports = defineConfig({
         experimentalSessionAndOrigin: true,
         testIsolation: "off",
         videosFolder: "cypress/validation/videos",
+        videoCompression: false,
         screenshotsFolder: "cypress/validation/screenshots",
         reporter: "mochawesome",
         reporterOptions: {
