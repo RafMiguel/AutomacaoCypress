@@ -18,3 +18,13 @@ export const elDemo = {
         './/h2[@class="text-center cw"]//strong[text()=" Thank you!"]',
     thanks_text: './/p[@class="text-center cw"]',
 };
+
+export const elLogin = {
+    menu_account: './/div[@class="dropdown"]//button[@id="ACCOUNT"]',
+    select_account: ".dropdown-menu",
+    language:
+        './/div[@class="dropdown"]//button[@type="button" and @id="languages"]',
+    select_lang: ".dropdown-menu",
+    form: ".form-control",
+    botao_login: './/button[@type="submit"]//span[text()="Login"]',
+};

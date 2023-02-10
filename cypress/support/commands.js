@@ -1,4 +1,4 @@
-import { elDemo } from "./elementos";
+import { elDemo, elLogin } from "./elementos";
 
 Cypress.Commands.add("limpar", () => {
     cy.xpath(elDemo.campo_first_name).clear({ force: true });
@@ -9,4 +9,28 @@ Cypress.Commands.add("limpar", () => {
 
 Cypress.Commands.add("shot", (nome) => {
     cy.wait(400).screenshot(nome, { capture: "runner", overwrite: true });
+});
+
+Cypress.Commands.add("rota", (urlBase) => {
+    cy.visit("https://phptravels" + urlBase);
+});
+
+Cypress.Commands.add("login", (email, senha) => {
+    cy.clearCookies();
+    cy.xpath(elLogin.language).click({ force: true });
+    cy.get(elLogin.select_lang)
+        .children()
+        .contains("English")
+        .click({ force: true })
+        .should("have.text", " English");
+    cy.xpath(elLogin.menu_account).click({ force: true });
+    cy.get(elLogin.select_account)
+        .children()
+        .contains("Customer Login")
+        .click({ force: true })
+        .should("have.text", "Customer Login");
+    cy.get(elLogin.form).first().type(email, { force: true });
+    cy.get(elLogin.form).eq(1).type(senha, { force: true });
+    cy.xpath(elLogin.botao_login).click({ force: true });
+    cy.get("h2").should("contain.text", "Hi, Raphael Welcome Back");
 });

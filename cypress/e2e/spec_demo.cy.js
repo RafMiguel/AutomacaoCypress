@@ -7,7 +7,7 @@ import estaticos from "../fixtures/estaticos.json";
 
 describe("Validações PHPTravels", () => {
     before(() => {
-        cy.visit("/demo");
+        cy.rota(".com/demo");
 
         cy.xpath(elUniversal.titulo)
             .should("have.text", "PHPTRAVELS Demo")
