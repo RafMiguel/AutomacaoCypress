@@ -16,6 +16,20 @@ Cypress.Commands.add("rota", (urlBase) => {
 });
 
 Cypress.Commands.add("login", (email, senha) => {
+    cy.get(elLogin.form).first().type(email, { force: true });
+    cy.get(elLogin.form).eq(1).type(senha, { force: true });
+    cy.xpath(elLogin.botao_login).click({ force: true }).wait(3000);
+    cy.get("h2").should("contain.text", "Hi, Raphael Welcome Back");
+    cy.xpath(elLogin.language).click({ force: true });
+    cy.get(elLogin.select_lang)
+        .children()
+        .contains("English")
+        .click({ force: true })
+        .should("have.text", " English");
+});
+
+/*
+Cypress.Commands.add("login", (email, senha) => {
     cy.clearCookies();
     cy.xpath(elLogin.language).click({ force: true });
     cy.get(elLogin.select_lang)
@@ -34,3 +48,4 @@ Cypress.Commands.add("login", (email, senha) => {
     cy.xpath(elLogin.botao_login).click({ force: true });
     cy.get("h2").should("contain.text", "Hi, Raphael Welcome Back");
 });
+*/

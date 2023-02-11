@@ -28,3 +28,9 @@ export const elLogin = {
     form: ".form-control",
     botao_login: './/button[@type="submit"]//span[text()="Login"]',
 };
+
+export const elHome = {
+    sub_titulo: './/div[@class]//p[contains(text(),"over 1.5")]',
+    info_titulo: ".info__title",
+    info_descricao: ".info__desc",
+};
