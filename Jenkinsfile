@@ -42,6 +42,12 @@ agent{
 
                                      }
                     }
-        }
+
+        post{
+            always{
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'cypress/validation/report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+              }    
+    }
 
 }
