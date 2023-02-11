@@ -60,7 +60,7 @@ describe("Home PHPTravels", () => {
             cy.get("h2")
                 .eq(1)
                 .should("be.visible")
-                .and("have.text", "Top Flight Destinations")
+                .and("have.text", txt_estatico.top_flight)
                 .and("have.css", "font-weight", "700")
                 .as("h2");
 
