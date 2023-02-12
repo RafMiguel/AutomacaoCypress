@@ -1,6 +1,5 @@
 pipeline{
 
-agent{
     agent any
 
         parameters{
@@ -48,6 +47,6 @@ agent{
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'cypress/validation/report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
               }    
-    }
+    
 
 }
