@@ -18,7 +18,7 @@ describe("Validações PHPTravels", () => {
             )
             .shot("1 - Demo");
     });
-    context("Página Demo - Alert", () => {
+    context("Página Demo - Alerta", () => {
         it("Validar alerta: Type your first name", () => {
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (first_name_alert) => {
