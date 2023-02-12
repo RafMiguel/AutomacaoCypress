@@ -26,7 +26,7 @@ describe("Validações PHPTravels", () => {
                     "Please type your first name"
                 );
             });
-            cy.shot("2 - Demo - Alerts (First Name)");
+            cy.shot("2 - Demo - Alerta (First Name)");
         });
 
         it("Validar alerta: Type your last name", () => {
