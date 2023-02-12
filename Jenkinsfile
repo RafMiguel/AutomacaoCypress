@@ -29,7 +29,7 @@ pipeline{
 
                 steps{
                     sh "npm install"
-                    sh "npm run cli --browser ${browser} --spec ${spec}"
+                    sh "npx cypress run --browser ${browser} --spec ${spec}"
                         }
                                         }
             stage('Deploy'){
