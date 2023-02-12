@@ -4,7 +4,7 @@ pipeline{
 
         parameters{
 
-            string(name: "spec", defautValue: "cypress/e2e/**/**", description: "Location where the spec file(s) are in project")
+            string(name: "spec", defaultValue: "cypress/e2e/**/**", description: "Location where the spec file(s) are in project")
             choice(name: "browser", choices: ['chrome', 'edge', 'firefox'], description: "Pick a browser to run the test spec")
 
                             }
