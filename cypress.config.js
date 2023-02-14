@@ -12,7 +12,7 @@ module.exports = defineConfig({
         reporter: "mochawesome",
         reporterOptions: {
             reportDir: "cypress/validation/report",
-            reportFilename: "phptravels",
+            reportFilename: "[name]_[status]",
             overwrite: false,
             html: true,
             json: true,
