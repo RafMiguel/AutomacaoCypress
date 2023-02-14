@@ -49,7 +49,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.get(elHotel.no_results).should('be.visible').and('have.attr', 'alt', 'no results')
         });
 
-        it.only('Search a available hotel using search parameters', () => {
+        it('Search a available hotel using search parameters', () => {
 
             cy.log('**_Clicking on "Search by City" search field_**')
             cy.search_hotel_by_city('Singapore','Singapore,Singapore')
