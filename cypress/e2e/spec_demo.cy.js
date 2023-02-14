@@ -22,9 +22,7 @@ describe("Validações PHPTravels", () => {
         it("Validar alerta: Type your first name", () => {
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (first_name_alert) => {
-                expect(first_name_alert).to.contain(
-                    "Please type your first name"
-                );
+                expect(first_name_alert).to.contain("Please type your first name");
             });
             cy.shot("2 - Demo - Alerta (First Name)");
         });
@@ -35,9 +33,7 @@ describe("Validações PHPTravels", () => {
             });
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (last_name_alert) => {
-                expect(last_name_alert).to.contains(
-                    "Please type your last name"
-                );
+                expect(last_name_alert).to.contains("Please type your last name");
             });
             cy.shot("3 - Demo - Alerts (Last Name)");
         });
@@ -48,9 +44,7 @@ describe("Validações PHPTravels", () => {
             });
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (last_name_alert) => {
-                expect(last_name_alert).to.contains(
-                    "Please type your business name"
-                );
+                expect(last_name_alert).to.contains("Please type your business name");
             });
             cy.shot("4 - Demo - Alerts (Business)");
         });
@@ -61,9 +55,7 @@ describe("Validações PHPTravels", () => {
             });
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (business_alert) => {
-                expect(business_alert).to.contains(
-                    "Please type your email name"
-                );
+                expect(business_alert).to.contains("Please type your email name");
             });
             cy.shot("5 - Demo - Alerts (Email)");
         });
@@ -79,9 +71,7 @@ describe("Validações PHPTravels", () => {
                 .find("strong")
                 .should("have.text", "Instant Demo")
                 .and("have.css", "font-weight", "700");
-            cy.get(elDemo.titulo_form)
-                .invoke("text")
-                .should("contain", "Request Form");
+            cy.get(elDemo.titulo_form).invoke("text").should("contain", "Request Form");
             //Validar campos do formulário
             cy.xpath(elDemo.campo_first_name)
                 .should("have.attr", "placeholder", "First Name")

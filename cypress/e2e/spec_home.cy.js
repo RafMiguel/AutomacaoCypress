@@ -2,7 +2,7 @@
 
 import rgbHex from "rgb-hex";
 import txt_estatico from "../fixtures/estaticos.json";
-import { elHome } from "../support/elementos";
+import { elHome,elFlight } from "../support/elementos";
 
 describe("Home PHPTravels", () => {
 
@@ -93,8 +93,7 @@ describe("Home PHPTravels", () => {
             it('"Validar informações de origem/destino da linha -Air India- em Top Flight"', () => {
 
                 cy.get('@air_india')
-                .get('h3')
-                .eq(6)
+                .xpath(elHome.mubai_to_dubai_flight)
                 .should('contain.text','Mumbai')
                 .and('contain.text','Dubai')
 
@@ -114,13 +113,16 @@ describe("Home PHPTravels", () => {
                 
             });
 
-            it.skip('Validar redirecionamento ao clicar no voo Mumbai → Dubai', () => {
+            it('Validar redirecionamento ao clicar no voo Mumbai → Dubai', () => {
                 cy.get('h6').eq(6).click({force:true},{timeout:10000})
-                cy.url()
+                cy.url().should('include','/bom/dxb/')
+                cy.get(elFlight.destination_titulo).first().should('contain.text','BOM').and('contain.text','DXB')
             });
 
         });
+
     });
+    
 
     /*
 it("sds", () => {
