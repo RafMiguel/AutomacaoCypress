@@ -21,6 +21,7 @@ pipeline{
                 steps{
 
                     echo('Building application')
+                    bat "npm install"
 
                         }
 
@@ -28,7 +29,7 @@ pipeline{
             stage('Testing'){
 
                 steps{
-                    bat "npm install"
+                    bat 'start cmd.exe /c del.evidences.bat'
                     bat "npm run cli"
                         }
                                         }
