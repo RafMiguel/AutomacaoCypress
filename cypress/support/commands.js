@@ -39,11 +39,20 @@ Cypress.Commands.add("search_hotel_by_city", (type_city, select_city) => {
         //.should("have.attr", "title", " Search by City")
         .click({ force: true });
     cy.get(".select2-search__field").should("be.visible").type(type_city, { force: true });
-    cy.xpath(".//li[@data-select2-id]")
+    cy.xpath(".//li[@data-select2-id]", { timeout: 15000 })
         .should("be.visible")
         .and("have.text", select_city)
-        .should("be.visible")
         .click({ force: true });
+});
+
+Cypress.Commands.add("real_date", () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = dd + "/" + mm + "/" + yyyy;
+    return today;
 });
 
 /*

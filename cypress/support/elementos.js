@@ -46,6 +46,7 @@ export const elHotel = {
 
 search_hotel_title: 'h2[class="text-center"]',
 calendar_checkout: '.checkout.form-control.form-control-lg.border-top-l0',
+calendar_checkin: '.checkin.form-control.form-control-lg.border-top-r0',
 no_results: 'img[alt="no results"]',
 search_by_city: './/div[@class="input-items"]//span[@role="textbox" and @title=" Search by City"]'
 
