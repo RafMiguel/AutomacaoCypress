@@ -1,2 +1,3 @@
 cypress/e2e/spec_home.cy.js
+cypress/e2e/spec_hotels.cy.js
 cypress/support/elementos.js

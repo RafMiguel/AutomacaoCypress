@@ -32,6 +32,20 @@ Cypress.Commands.add("box_air_india", () => {
     cy.get("h3").eq(6);
 });
 
+Cypress.Commands.add("search_hotel_by_city", (type_city, select_city) => {
+    cy.get(".main_search.contact-form-action").get(".row.g-1").first();
+    cy.get(".input-items")
+        .find('span[role="textbox"]')
+        //.should("have.attr", "title", " Search by City")
+        .click({ force: true });
+    cy.get(".select2-search__field").should("be.visible").type(type_city, { force: true });
+    cy.xpath(".//li[@data-select2-id]")
+        .should("be.visible")
+        .and("have.text", select_city)
+        .should("be.visible")
+        .click({ force: true });
+});
+
 /*
 Cypress.Commands.add("login", (email, senha) => {
     cy.clearCookies();

@@ -32,6 +32,21 @@ export const elHome = {
     info_titulo: ".info__title",
     info_descricao: ".info__desc",
     taxes_fees_description: 'p[class="font-size-15"]',
-    top_fligh_prices: ".price-box.d-flex.align-items-center"
-    //cy.xpath('.//h3[@class="deal__title"][contains(text(),"Mumbai")]').should('be.visible')
+    top_fligh_prices: ".price-box.d-flex.align-items-center",
+    mubai_to_dubai_flight: './/h3[@class="deal__title"][contains(text(),"Mumbai")]'
 };
+
+export const elFlight = {
+
+destination_titulo: 'h2[class="sec__title_list"]'
+
+}
+
+export const elHotel = {
+
+search_hotel_title: 'h2[class="text-center"]',
+calendar_checkout: '.checkout.form-control.form-control-lg.border-top-l0',
+no_results: 'img[alt="no results"]',
+search_by_city: './/div[@class="input-items"]//span[@role="textbox" and @title=" Search by City"]'
+
+}
