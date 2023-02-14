@@ -14,23 +14,24 @@ export const elDemo = {
     segundo_digito: "#numb2",
     campo_resultado: "#number",
     botao_submit: './/button[text()="Submit"]',
-    titulo_thankYou:
-        './/h2[@class="text-center cw"]//strong[text()=" Thank you!"]',
-    thanks_text: './/p[@class="text-center cw"]',
+    titulo_thankYou: './/h2[@class="text-center cw"]//strong[text()=" Thank you!"]',
+    thanks_text: './/p[@class="text-center cw"]'
 };
 
 export const elLogin = {
     menu_account: './/div[@class="dropdown"]//button[@id="ACCOUNT"]',
     select_account: ".dropdown-menu",
-    language:
-        './/div[@class="dropdown"]//button[@type="button" and @id="languages"]',
+    language: './/div[@class="dropdown"]//button[@type="button" and @id="languages"]',
     select_lang: ".dropdown-menu",
     form: ".form-control",
-    botao_login: './/button[@type="submit"]//span[text()="Login"]',
+    botao_login: './/button[@type="submit"]//span[text()="Login"]'
 };
 
 export const elHome = {
     sub_titulo: './/div[@class]//p[contains(text(),"over 1.5")]',
     info_titulo: ".info__title",
     info_descricao: ".info__desc",
+    taxes_fees_description: 'p[class="font-size-15"]',
+    top_fligh_prices: ".price-box.d-flex.align-items-center"
+    //cy.xpath('.//h3[@class="deal__title"][contains(text(),"Mumbai")]').should('be.visible')
 };

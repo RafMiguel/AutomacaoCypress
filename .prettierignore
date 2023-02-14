@@ -1,1 +1,2 @@
 cypress/e2e/spec_home.cy.js
+cypress/support/elementos.js

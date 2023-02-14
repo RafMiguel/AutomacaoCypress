@@ -28,6 +28,10 @@ Cypress.Commands.add("login", (email, senha) => {
         .should("have.text", " English");
 });
 
+Cypress.Commands.add("box_air_india", () => {
+    cy.get("h3").eq(6);
+});
+
 /*
 Cypress.Commands.add("login", (email, senha) => {
     cy.clearCookies();
