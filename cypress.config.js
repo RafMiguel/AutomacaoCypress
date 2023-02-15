@@ -6,7 +6,6 @@ module.exports = defineConfig({
         chromeWebSecurity: false,
         experimentalSessionAndOrigin: true,
         testIsolation: "off",
-        watchForFileChanges: false,
         videosFolder: "cypress/validation/videos",
         videoCompression: false,
         screenshotsFolder: "cypress/validation/screenshots",
@@ -18,6 +17,10 @@ module.exports = defineConfig({
             html: true,
             json: true,
             timestamp: "dd-mm-yyyy_HH-MM",
+        },
+        retries: {
+            openMode: 1,
+            runMode: 1,
         },
     },
     setupNodeEvents(on, config) {

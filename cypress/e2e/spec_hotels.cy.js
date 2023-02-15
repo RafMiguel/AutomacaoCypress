@@ -3,7 +3,6 @@
 import rgbHex from "rgb-hex";
 import { elHome, elHotel } from "../support/elementos";
 import txt_estatico from "../fixtures/estaticos.json"
-import parameterized_url from "../fixtures/custom_url.json"
 import date from "../support/date"
 
 describe("Book a Hotel - PHPTravels", () => {
@@ -88,9 +87,6 @@ describe("Book a Hotel - PHPTravels", () => {
             .click({force:true})
 
             cy.log('**_Validate parameters sended at previous page_**')
-            cy.url().then((href) =>{
-               cy.writeFile('cypress/fixtures/custom_url.json','{\n"custom_url":'+'"'+href+'"\n}').log('**_A url with the parameters of local, date and number of people that we set so far was stored in a json file, so later we can directly access the URL_**')
-            })
             cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
             .should('have.text',txt_estatico.singapore_hotels_search)
@@ -117,11 +113,13 @@ describe("Book a Hotel - PHPTravels", () => {
     });
 
     context('Exploring the resurts of the search above', () => {
-
-        it('Visit url already parameterized an stored in custom_url.json', () => {
-            cy.visit(parameterized_url.custom_url)
+        beforeEach(() => {
+            cy.custom_url()
         });
         
+        it('sadsd', () => {
+            cy.log('sds')
+        });
     });
 })
 
