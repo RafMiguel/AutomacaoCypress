@@ -41,6 +41,7 @@ describe("Book a Hotel - PHPTravels", () => {
             .should('have.text','Checkout')
             cy.xpath(elHotel.travellers_label)
             .should('have.text','Travellers')
+            cy.shot('Hotels - Search Box')
   
         });
 
@@ -58,6 +59,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.get(elHotel.no_results)
             .should('be.visible')
             .and('have.attr', 'alt', 'no results')
+            cy.shot('Hotels - No Results')
         });
 
         it('Search a available hotel using search parameters', () => {
@@ -107,12 +109,13 @@ describe("Book a Hotel - PHPTravels", () => {
                 expect(days).to.contains('9 Nights').to.contains(date.today()).to.contains(date.nine_days_before_today())
                 
             })
+            cy.shot('Hotels - Search Results')
 
             })
             
     });
 
-    context('Exploring the resurts of the search above', () => {
+    context('Exploring the results of the search above', () => {
         beforeEach(() => {
             cy.custom_url()
         });

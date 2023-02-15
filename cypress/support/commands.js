@@ -1,3 +1,4 @@
+import rgbHex from "rgb-hex";
 import { elDemo, elLogin } from "./elementos";
 import date from "./date";
 
@@ -64,6 +65,22 @@ Cypress.Commands.add("real_date", () => {
 
     today = dd + "/" + mm + "/" + yyyy;
     return today;
+});
+
+Cypress.Commands.add("color_check", (element, color_attr, color_hex) => {
+    cy.get(element)
+        .invoke("css", color_attr)
+        .then((color) => {
+            expect(rgbHex(color)).to.eq(color_hex, "Color expected");
+        });
+});
+
+Cypress.Commands.add("color_check_xpath", (element, color_attr, color_hex) => {
+    cy.xpath(element)
+        .invoke("css", color_attr)
+        .then((color) => {
+            expect(rgbHex(color)).to.eq(color_hex, "Color expected");
+        });
 });
 
 /*
