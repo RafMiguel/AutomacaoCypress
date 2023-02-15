@@ -28,6 +28,7 @@ export const elLogin = {
 };
 
 export const elHome = {
+    home_top_menu: '.main-menu-content.w-100',
     sub_titulo: './/div[@class]//p[contains(text(),"over 1.5")]',
     info_titulo: ".info__title",
     info_descricao: ".info__desc",
@@ -44,6 +45,7 @@ destination_titulo: 'h2[class="sec__title_list"]'
 
 export const elHotel = {
 
+
 search_hotel_title: 'h2[class="text-center"]',
 search_container: '.main_search.contact-form-action',
 search_labels: 'span[class="label-text"]',
@@ -52,6 +54,7 @@ calendar_checkout: '.checkout.form-control.form-control-lg.border-top-l0',
 calendar_checkin: '.checkin.form-control.form-control-lg.border-top-r0',
 travellers_menu_drop: '.dropdown-menu.dropdown-menu-wrap',
 adults_qtd: 'input[id="adults"]',
+search_btn: '#submit',
 results_at_menu_bar: '.left-side-info.rtl-align-right',
 no_results: 'img[alt="no results"]',
 search_by_city: './/div[@class="input-items"]//span[@role="textbox" and @title=" Search by City"]'

@@ -6,6 +6,7 @@ module.exports = defineConfig({
         chromeWebSecurity: false,
         experimentalSessionAndOrigin: true,
         testIsolation: "off",
+        watchForFileChanges: false,
         videosFolder: "cypress/validation/videos",
         videoCompression: false,
         screenshotsFolder: "cypress/validation/screenshots",

@@ -1,7 +1,9 @@
 ///<reference types="cypress"/>
 
 import rgbHex from "rgb-hex";
-import { elHotel } from "../support/elementos";
+import { elHome, elHotel } from "../support/elementos";
+import txt_estatico from "../fixtures/estaticos.json"
+import parameterized_url from "../fixtures/custom_url.json"
 import date from "../support/date"
 
 describe("Book a Hotel - PHPTravels", () => {
@@ -9,7 +11,7 @@ describe("Book a Hotel - PHPTravels", () => {
     context("Hotel page", () => {
         it("Go to hotel menu", () => {
             cy.rota(".net/");
-            cy.get(".main-menu-content.w-100")
+            cy.get(elHome.home_top_menu)
                 .contains("Hotels")
                 .should("have.attr", "title", "hotels")
                 .and("have.text", "Hotels")
@@ -17,7 +19,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.url()
             .should("eq", "https://phptravels.net/hotels");
             cy.get(elHotel.search_hotel_title)
-            .should("have.text", "SEARCH FOR BEST HOTELS");
+            .should("have.text", txt_estatico.search_best_hotels);
         });
     })
 
@@ -52,7 +54,7 @@ describe("Book a Hotel - PHPTravels", () => {
             .invoke("attr","value","10-02-2009")
             .log('**_Picked a older date to force a unavailable result_**');
 
-            cy.get('#submit')
+            cy.get(elHotel.search_btn)
             .click({force:true})
             cy.get(elHotel.no_results)
             .should('be.visible')
@@ -80,21 +82,46 @@ describe("Book a Hotel - PHPTravels", () => {
             .find(elHotel.adults_qtd)
             .invoke('attr','value','3')
             .should('have.value','3')
-            cy.get('#submit')
+            cy.get(elHotel.search_btn)
             .should('be.visible')
             .and('contain.text','Search')
             .click({force:true})
 
             cy.log('**_Validate parameters sended at previous page_**')
-            cy.get(elHotel.results_at_menu_bar)
+            cy.url().then((href) =>{
+               cy.writeFile('cypress/fixtures/custom_url.json','{\n"custom_url":'+'"'+href+'"\n}').log('**_A url with the parameters of local, date and number of people that we set so far was stored in a json file, so later we can directly access the URL_**')
+            })
+            cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
-            .should('have.text','Search Hotels in singapore')
-            cy.get(elHotel.results_at_menu_bar)
-            .find('p').first()
-            .find('strong')
-            
+            .should('have.text',txt_estatico.singapore_hotels_search)
+            cy.get('@results').find('strong')
+            .contains('9 Nights').as('days_qtd')
+            .invoke('css','font-weight')
+            .then((font_weight) =>{
+
+                cy.log('font-weight igual a '+font_weight)
+                expect(font_weight).to.eq('700')
+            })
+
+            cy.get('@days_qtd')
+            .get('p').first()
+            .invoke('text')
+            .then((days) =>{
+
+                expect(days).to.contains('9 Nights').to.contains(date.today()).to.contains(date.nine_days_before_today())
+                
+            })
 
             })
             
     });
-});
+
+    context('Exploring the resurts of the search above', () => {
+
+        it('Visit url already parameterized an stored in custom_url.json', () => {
+            cy.visit(parameterized_url.custom_url)
+        });
+        
+    });
+})
+
