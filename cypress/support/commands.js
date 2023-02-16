@@ -72,6 +72,33 @@ Cypress.Commands.add("color_check_xpath", (element, color_attr, color_hex) => {
         });
 });
 
+Cypress.Commands.add(
+    "singapore_prices_column",
+    (equal, font_size_one, font_weight, font_size_two, value) => {
+        cy.get(".col-4.p-2")
+            .find(".card-price")
+            .eq(equal)
+            .should("be.visible")
+            .find('span[class="price__from"]')
+            .should("have.text", "Start From");
+        cy.get(".col-4.p-2")
+            .find(".card-price")
+            .eq(equal)
+            .find('span[class="price__num"]')
+            .find("small")
+            .should("have.css", "font-size", font_size_one)
+            .and("have.text", "USD");
+        cy.get(".col-4.p-2")
+            .find(".card-price")
+            .eq(equal)
+            .find('span[class="price__num"]')
+            .find("strong")
+            .should("have.css", "font-weight", font_weight)
+            .and("have.css", "font-size", font_size_two)
+            .and("have.text", value);
+    }
+);
+
 /*
 Cypress.Commands.add("login", (email, senha) => {
     cy.clearCookies();
