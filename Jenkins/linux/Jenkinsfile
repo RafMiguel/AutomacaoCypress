@@ -22,14 +22,16 @@ pipeline{
 
                     echo('Building application')
 
+                    sh "npm install"
+
                         }
 
                                  }
             stage('Testing'){
 
                 steps{
-                    sh "npm install"
-                    sh "npm run cli"
+                    sh 'rm -rf cypress/validation/'
+                    sh "npx cypress run --browser ${BROWSER} --spec ${SPEC}"
                         }
                                         }
             stage('Deploy'){
