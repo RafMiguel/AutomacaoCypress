@@ -30,6 +30,7 @@ pipeline{
 
                 steps{
                     bat 'start cmd.exe /c del_evidences.bat'
+                    bat 'rm -rf cypress/validation/'
                     bat "npx cypress run --browser ${BROWSER} --spec ${SPEC}"
                         }
                                         }
