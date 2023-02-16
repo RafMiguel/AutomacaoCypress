@@ -30,7 +30,7 @@ pipeline{
 
                 steps{
                     bat 'start cmd.exe /c del_evidences.bat'
-                    bat "npm run cli --browser ${BROWSER} --spec ${SPEC}"
+                    bat "npx cypress run --browser ${BROWSER} --spec ${SPEC}"
                         }
                                         }
             stage('Deploy'){
