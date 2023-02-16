@@ -64,7 +64,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.shot('Hotels - No Results')
         });
 
-        it.only('Search a available hotel using search parameters', () => {
+        it('Search a available hotel using search parameters', () => {
 
             cy.log('**_Clicking on "Search by City" search field_**')
             cy.search_hotel_by_city('Singapore','Singapore,Singapore')
@@ -122,14 +122,14 @@ describe("Book a Hotel - PHPTravels", () => {
     });
 
     context.only('Exploring the results of the search above', () => {
-        beforeEach(() => {
+        before(() => {
             cy.readFile('cypress/validation/results/saved_url.txt').then((current_url) =>{
                 cy.visit(current_url)
             })
             
         });
         
-        it('sadsd', () => {
+        it('Validate lenght of results by title', () => {
             cy.get('section[data-ref="container"]')
             .find('ul').children()
             .find('div[class="card-item card-item-list"]').as('lenght_results')
@@ -142,9 +142,9 @@ describe("Book a Hotel - PHPTravels", () => {
             .then(text => text.filter(text => text))
             .then(results =>{
 
-                cy.writeFile('cypress/validation/results/hotel_results.txt',results)
-                cy.writeFile('cypress/validation/results/hotel_results.json',results)
-                cy.readFile('cypress/validation/results/hotel_results.txt').should('deep.include','Rendezvous Hotels').and('deep.include','Swissotel Le Plaza Basel')
+                cy.writeFile('cypress/validation/results/hotel/hotel_results.txt',results)
+                cy.writeFile('cypress/validation/results/hotel/hotel_results.json',results)
+                cy.readFile('cypress/validation/results/hotel/hotel_results.txt').should('deep.include','Rendezvous Hotels').and('deep.include','Swissotel Le Plaza Basel')
                 
             cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
 
@@ -152,11 +152,31 @@ describe("Book a Hotel - PHPTravels", () => {
 //invoke('text').then(text => text.map(text =>text.trim())) = Remove blank whitespaces from the text obtained
 //invoke('text').then(text => text.filter(text => text)) = Remove empty (like quotes, for example) that doesn't make part of the text
 
-})
-})
+            })
+        })
+
+        it('Validate if the hotels returned are from Singapore', () => {
+            cy.get('p[class="card-meta"]')
+            .should('contain.text','singapore')
+        });
+
+        it('Validate Rendezvous hotel description', () => {
+            cy.get('small[style]')
+            .contains('Rendezvous')
+            .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
+            cy.get('@rendezvous').should('have.css','font-size','12px')
+            })
+
+        it('Validate Swissotel hotel description', () => {
+            cy.get('small[style]').contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
+            cy.get('@swissotel').should('have.css','font-size','12px')
+        });
+        });
+
+
     
             
         });
-    });
+    
 
 
