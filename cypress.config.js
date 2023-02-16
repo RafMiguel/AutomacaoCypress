@@ -5,6 +5,7 @@ module.exports = defineConfig({
         viewportHeight: 1080,
         chromeWebSecurity: false,
         experimentalSessionAndOrigin: true,
+        watchForFileChanges: true,
         testIsolation: "off",
         videosFolder: "cypress/validation/videos",
         videoCompression: false,

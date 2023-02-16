@@ -5,6 +5,8 @@ import { elHome, elHotel } from "../support/elementos";
 import txt_estatico from "../fixtures/estaticos.json"
 import date from "../support/date"
 
+
+
 describe("Book a Hotel - PHPTravels", () => {
 
     context("Hotel page", () => {
@@ -115,14 +117,30 @@ describe("Book a Hotel - PHPTravels", () => {
             
     });
 
-    context('Exploring the results of the search above', () => {
+    context.only('Exploring the results of the search above', () => {
         beforeEach(() => {
             cy.custom_url()
+            cy.clearCookies()
+            
         });
         
         it('sadsd', () => {
-            cy.log('sds')
+            cy.get('section[data-ref="container"]').find('ul').children().find('div[class="card-item card-item-list"]').as('lenght_results').should('have.length.above',0)
+            cy.get('@lenght_results').find('h3[class="card-title"]').invoke('text').then(text => text.split('\n')).then(text => text.map(text =>text.trim())).then(text => text.filter(text => text)).then(results =>{
+
+
+                cy.writeFile('cypress/validation/results/hotel_results.txt',results)
+                cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
+
+//invoke('text').then(text => text.split('\n')) = Add break between lines
+//invoke('text').then(text => text.map(text =>text.trim())) = Remove blank whitespaces from the text obtained
+//invoke('text').then(text => text.filter(text => text)) = Remove empty (like quotes, for example) that doesn't make part of the text
+
+})
+})
+    
+            
         });
     });
-})
+
 
