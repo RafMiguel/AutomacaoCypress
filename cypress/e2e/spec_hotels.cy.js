@@ -121,7 +121,7 @@ describe("Book a Hotel - PHPTravels", () => {
             
     });
 
-    context.only('Exploring the results of the search above', () => {
+    context('Exploring the results of the search above', () => {
         before(() => {
             cy.readFile('cypress/validation/results/saved_url.txt').then((current_url) =>{
                 cy.visit(current_url)
@@ -160,23 +160,41 @@ describe("Book a Hotel - PHPTravels", () => {
             .should('contain.text','singapore')
         });
 
-        it('Validate Rendezvous hotel description', () => {
-            cy.get('small[style]')
-            .contains('Rendezvous')
-            .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
-            cy.get('@rendezvous').should('have.css','font-size','12px')
-            })
+        context('Rendezvous container details', () => {
+            it('Validate Rendezvous hotel description', () => {
+                cy.get('small[style]')
+                .contains('Rendezvous')
+                .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
+                cy.get('@rendezvous').should('have.css','font-size','12px')
+                })
 
+                it('Rendezvous - Validate prices column', () => {
+                    cy.singapore_prices_column('0','12px','700','18px','841.50')
+                });
+        });
+
+
+
+
+
+
+
+
+
+    context('Swissotel container details', () => {
         it('Validate Swissotel hotel description', () => {
             cy.get('small[style]').contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
             cy.get('@swissotel').should('have.css','font-size','12px')
         });
+
+        it('Swissotel - Validate prices column', () => {
+            cy.singapore_prices_column('1','12px','700','18px','792.00')
+            cy.get('.card-price').find('p[class="mb-4"]').first().should('have.text','9 Nights')
         });
-
-
+    });
     
             
         });
     
 
-
+    });
