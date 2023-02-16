@@ -4,8 +4,8 @@ pipeline{
 
         parameters{
 
-            string(name: "spec", defaultValue: "cypress/e2e/**/**", description: "Location where the spec file(s) are in project")
-            choice(name: "browser", choices: ['chrome', 'edge', 'firefox'], description: "Pick a browser to run the test spec")
+            string(name: "SPEC", defaultValue: "cypress/e2e/**/**", description: "Location where the spec file(s) are in project")
+            choice(name: "BROWSER", choices: ['chrome', 'edge', 'firefox'], description: "Pick a browser to run the test spec")
 
                             }
 
@@ -30,7 +30,7 @@ pipeline{
 
                 steps{
                     bat 'start cmd.exe /c del_evidences.bat'
-                    bat "npm run cli"
+                    bat "npm run cli --browser ${BROWSER} --spec ${SPEC}"
                         }
                                         }
             stage('Deploy'){
