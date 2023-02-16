@@ -1,6 +1,5 @@
 import rgbHex from "rgb-hex";
 import { elDemo, elLogin } from "./elementos";
-import date from "./date";
 
 Cypress.Commands.add("limpar", () => {
     cy.xpath(elDemo.campo_first_name).clear({ force: true });
@@ -15,16 +14,6 @@ Cypress.Commands.add("shot", (nome) => {
 
 Cypress.Commands.add("rota", (urlBase) => {
     cy.visit("https://phptravels" + urlBase);
-});
-
-Cypress.Commands.add("custom_url", () => {
-    cy.visit(
-        "https://phptravels.net/hotels/en/usd/singapore/" +
-            date.nine_days_before_today() +
-            "/" +
-            date.today() +
-            "/1/3/0/US"
-    );
 });
 
 Cypress.Commands.add("login", (email, senha) => {

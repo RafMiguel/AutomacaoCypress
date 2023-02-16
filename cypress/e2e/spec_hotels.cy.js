@@ -64,7 +64,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.shot('Hotels - No Results')
         });
 
-        it('Search a available hotel using search parameters', () => {
+        it.only('Search a available hotel using search parameters', () => {
 
             cy.log('**_Clicking on "Search by City" search field_**')
             cy.search_hotel_by_city('Singapore','Singapore,Singapore')
@@ -91,6 +91,10 @@ describe("Book a Hotel - PHPTravels", () => {
             .click({force:true})
 
             cy.log('**_Validate parameters sended at previous page_**')
+            cy.url().then((url_param) =>{
+
+                cy.writeFile('cypress/validation/results/saved_url.txt',url_param)
+            })
             cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
             .should('have.text',txt_estatico.singapore_hotels_search)
@@ -119,18 +123,30 @@ describe("Book a Hotel - PHPTravels", () => {
 
     context.only('Exploring the results of the search above', () => {
         beforeEach(() => {
-            cy.custom_url()
-            cy.clearCookies()
+            cy.readFile('cypress/validation/results/saved_url.txt').then((current_url) =>{
+                cy.visit(current_url)
+            })
             
         });
         
         it('sadsd', () => {
-            cy.get('section[data-ref="container"]').find('ul').children().find('div[class="card-item card-item-list"]').as('lenght_results').should('have.length.above',0)
-            cy.get('@lenght_results').find('h3[class="card-title"]').invoke('text').then(text => text.split('\n')).then(text => text.map(text =>text.trim())).then(text => text.filter(text => text)).then(results =>{
-
+            cy.get('section[data-ref="container"]')
+            .find('ul').children()
+            .find('div[class="card-item card-item-list"]').as('lenght_results')
+            .should('have.length.above',0)
+            cy.get('@lenght_results')
+            .find('h3[class="card-title"]')
+            .invoke('text')
+            .then(text => text.split('\n'))
+            .then(text => text.map(text =>text.trim()))
+            .then(text => text.filter(text => text))
+            .then(results =>{
 
                 cy.writeFile('cypress/validation/results/hotel_results.txt',results)
-                cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
+                cy.writeFile('cypress/validation/results/hotel_results.json',results)
+                cy.readFile('cypress/validation/results/hotel_results.txt').should('deep.include','Rendezvous Hotels').and('deep.include','Swissotel Le Plaza Basel')
+                
+            cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
 
 //invoke('text').then(text => text.split('\n')) = Add break between lines
 //invoke('text').then(text => text.map(text =>text.trim())) = Remove blank whitespaces from the text obtained
