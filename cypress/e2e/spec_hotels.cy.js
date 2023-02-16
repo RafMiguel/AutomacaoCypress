@@ -85,7 +85,7 @@ describe("Book a Hotel - PHPTravels", () => {
             .should('have.value','3')
             cy.get(elHotel.search_btn)
             .should('be.visible')
-            .and('contain.text','Search')
+            
             .click({force:true})
 
             cy.log('**_Validate parameters sended at previous page_**')

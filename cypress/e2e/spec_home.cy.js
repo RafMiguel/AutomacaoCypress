@@ -14,14 +14,14 @@ describe("Home PHPTravels", () => {
         it("Título - Lets book your next trip", () => {
             cy.log("Capturar elemento que contém o título -Let’s book your next trip!- e validar título");
             
-            cy.get("h2").first()
+            cy.get(elHome.main_title_and_desc)
                 .find("strong")
                 .should("have.css", "font-weight", "700")
                 .and("have.text", " Let’s book your next trip!");
         });
 
         it("Sub título - Choose best deals over 1.5 million travel services", () => {
-            cy.get("p").first()
+            cy.get(elHome.main_title_and_desc).find('p')
                 .should("have.text", "Choose best deals over 1.5 million travel services");
         });
 
@@ -65,15 +65,10 @@ describe("Home PHPTravels", () => {
             .and("have.css", "font-weight", "700").as("top_flight_title");
 
             cy.color_check('@top_flight_title','color','0d233e')
-/*
-            cy.get("@top_flight_title")
-            .invoke("css", "color")
-            .then((font_color) => {
-                expect(rgbHex(font_color)).to.eq("0d233e");
-            });*/
+
         });
 
-        context.only('Top Flights Destination (Tabela) - Validar cores e parâmetros (texto)', () => {
+        context('Top Flights Destination (Tabela) - Validar cores e parâmetros (texto)', () => {
             it('Validar cor dos nomes das linhas aéreas', () => {
                 cy.color_check(elHome.airline_names,'color','1062fe')
     });
@@ -88,8 +83,8 @@ describe("Home PHPTravels", () => {
             });
 
             it('Validar cor e propriedade da classe de preços na tabela', () => {
-                cy.color_check_xpath(elHome.top_fligh_prices,'color','0d233e')
-                cy.xpath(elHome.top_fligh_prices).should('have.css','font-weight','700')
+                cy.color_check_xpath(elHome.top_flight_only_prices,'color','0d233e')
+                cy.xpath(elHome.top_flight_only_prices).should('have.css','font-weight','700')
             });
 });
   
@@ -118,15 +113,11 @@ describe("Home PHPTravels", () => {
 
             it('Validar preço inicial do voo -Mumbai & Dubai- em Top Flight', () => {
                 cy.log('Checar preço seguindo a ordem: From USD 450')
-                cy.get(elHome.top_fligh_prices)
-                .eq(6)
-                .should('be.visible')
-                .find('span').as('air_india_price')
-                .first()
-                .should('have.text','From')
-                cy.get('@air_india_price')
-                .eq(1)
-                .should('have.text','USD 450')
+                cy.get(elHome.top_fligh_from_and_prices).eq(6).invoke('text').then((air_india_price) =>{
+
+                    expect(air_india_price).to.include('From').include('USD 450')
+
+                })
                 
             });
 

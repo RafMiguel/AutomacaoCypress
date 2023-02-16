@@ -29,6 +29,7 @@ export const elLogin = {
 
 export const elHome = {
     home_top_menu: '.main-menu-content.w-100',
+    main_title_and_desc: 'div[class="d-none d-sm-block d-lg-block d-xl-block"]',
     sub_titulo: './/div[@class]//p[contains(text(),"over 1.5")]',
     home_main_search_section: '.hero-box.hero-bg.active.p-4',
     info_titulo: ".info__title",
@@ -36,7 +37,8 @@ export const elHome = {
     taxes_fees_description: 'p[class="font-size-15"]',
     airline_names: 'div[class="col-7"]',
     top_fligh_FROM_word: 'span[class="price__from mr-1"]',
-    top_fligh_prices: './/div[@class="col-7"]//span[@class="price__num"]',
+    top_flight_only_prices: './/div[@class="col-7"]//span[@class="price__num"]',
+    top_fligh_from_and_prices: '.price-box.d-flex.align-items-center',
     origin_destiny: '.deal__title',
     mubai_to_dubai_flight: './/h3[@class="deal__title"][contains(text(),"Mumbai")]'
 };
