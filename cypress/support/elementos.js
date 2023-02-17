@@ -63,6 +63,19 @@ adults_qtd: 'input[id="adults"]',
 search_btn: '#submit',
 results_at_menu_bar: '.left-side-info.rtl-align-right',
 no_results: 'img[alt="no results"]',
-search_by_city: './/div[@class="input-items"]//span[@role="textbox" and @title=" Search by City"]'
+search_by_city: './/div[@class="input-items"]//span[@role="textbox" and @title=" Search by City"]',
+
+results: {//Created 'results' json inside 'elHotel' json to separete sections
+
+    main_container: 'section[data-ref="container"]',
+    per_hotel: 'div[class="card-item card-item-list"]',
+    per_hotel_name: 'h3[class="card-title"]',
+    hotel_location: 'p[class="card-meta"]',
+    hotel_description: 'small[style]',
+    hotel_star_rating: '.stars.la.la-star',
+    hotel_card_price: '.card-price',
+    hotel_period: 'p[class="mb-4"]',
+
+}
 
 }
