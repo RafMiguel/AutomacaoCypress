@@ -198,7 +198,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.get('@swissotel').find('.rating__text').should('have.text','4 Ratings')
         });
 
-        it.only('Swissotel - Approval badge', () =>{
+        it('Swissotel - Approval badge', () =>{
             
             cy.readFile('cypress/fixtures/approval_badge.txt').then((approval_badge) =>{
                 cy.get('.card-price').find('img[style]').should('be.visible').and('have.attr','src',approval_badge)
