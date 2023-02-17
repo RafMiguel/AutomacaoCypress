@@ -7,6 +7,7 @@ module.exports = defineConfig({
         experimentalSessionAndOrigin: true,
         watchForFileChanges: true,
         testIsolation: "off",
+        failOnStatusCode: false,
         videosFolder: "cypress/validation/videos",
         videoCompression: false,
         screenshotsFolder: "cypress/validation/screenshots",

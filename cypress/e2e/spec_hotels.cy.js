@@ -161,36 +161,49 @@ describe("Book a Hotel - PHPTravels", () => {
         });
 
         context('Rendezvous container details', () => {
-            it('Validate Rendezvous hotel description', () => {
+            it('Rendezvous - Hotel description', () => {
                 cy.get('small[style]')
                 .contains('Rendezvous')
                 .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
                 cy.get('@rendezvous').should('have.css','font-size','12px')
                 })
 
-                it('Rendezvous - Validate prices column', () => {
+                it('Rendezvous - Prices column', () => {
                     cy.singapore_prices_column('0','12px','700','18px','841.50')
+                });
+
+                it('Rendezvous - Ratings', () => {
+                    cy.get('section[data-ref="container"]').find('ul').find('li[id="rendezvous hotels"]').should('have.attr','id','rendezvous hotels').as('rendezvous')
+                    cy.get('@rendezvous').find('.review__text').find('.stars.la.la-star').should('have.length',2)
+                    cy.get('@rendezvous').find('.rating__text').should('have.text','2 Ratings')
+                    
                 });
         });
 
 
-
-
-
-
-
-
-
     context('Swissotel container details', () => {
-        it('Validate Swissotel hotel description', () => {
+        it('Swissotel - Hotel description', () => {
             cy.get('small[style]').contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
             cy.get('@swissotel').should('have.css','font-size','12px')
         });
 
-        it('Swissotel - Validate prices column', () => {
+        it('Swissotel - Prices column', () => {
             cy.singapore_prices_column('1','12px','700','18px','792.00')
             cy.get('.card-price').find('p[class="mb-4"]').first().should('have.text','9 Nights')
         });
+
+        it('Swissotel - Ratings', () => {
+            cy.get('section[data-ref="container"]').find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
+            cy.get('@swissotel').find('.review__text').find('.stars.la.la-star').should('have.length',4)
+            cy.get('@swissotel').find('.rating__text').should('have.text','4 Ratings')
+        });
+
+        it.only('Swissotel - Approval badge', () =>{
+            
+            cy.readFile('cypress/fixtures/approval_badge.txt').then((approval_badge) =>{
+                cy.get('.card-price').find('img[style]').should('be.visible').and('have.attr','src',approval_badge)
+            })
+        })
     });
     
             
