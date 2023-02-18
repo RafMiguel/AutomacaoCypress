@@ -93,7 +93,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.log('**_Validate parameters sended at previous page_**')
             cy.url().then((url_param) =>{
 
-                cy.writeFile('cypress/validation/results/saved_url.txt',url_param)
+                cy.writeFile('cypress/validation/results/hotel/saved_hotel_url.txt',url_param)
             })
             cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
@@ -123,7 +123,7 @@ describe("Book a Hotel - PHPTravels", () => {
 
     context('Exploring the results of the search above', () => {
         beforeEach(() => {
-            cy.readFile('cypress/validation/results/saved_url.txt').then((current_url) =>{
+            cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
                 cy.visit(current_url)
             })
             
