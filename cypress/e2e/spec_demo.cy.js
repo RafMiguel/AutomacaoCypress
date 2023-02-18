@@ -1,11 +1,10 @@
 /// <reference types="cypress"/>
-import rgbhex from "rgb-hex";
 import { elDemo, elUniversal } from "../support/elementos";
 
-import dados_cliente from "../fixtures/dados_cliente.json";
-import estaticos from "../fixtures/estaticos.json";
-
 describe("Validações PHPTravels", () => {
+    const client = "cypress/fixtures/dados_cliente.json";
+    const texts = "cypress/fixtures/estaticos.json";
+
     before(() => {
         cy.rota(".com/demo");
 
@@ -28,9 +27,14 @@ describe("Validações PHPTravels", () => {
         });
 
         it("Validar alerta: Type your last name", () => {
-            cy.xpath(elDemo.campo_first_name).type(dados_cliente.first_name, {
-                force: true,
-            });
+            cy.readFile(client)
+                .its("first_name")
+                .then((first_name) => {
+                    cy.xpath(elDemo.campo_first_name).type(first_name, {
+                        force: true,
+                    });
+                });
+
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (last_name_alert) => {
                 expect(last_name_alert).to.contains("Please type your last name");
@@ -39,9 +43,14 @@ describe("Validações PHPTravels", () => {
         });
 
         it("Validar alerta: Type your business", () => {
-            cy.xpath(elDemo.campo_last_name).type(dados_cliente.last_name, {
-                force: true,
-            });
+            cy.readFile(client)
+                .its("last_name")
+                .then((last_name) => {
+                    cy.xpath(elDemo.campo_last_name).type(last_name, {
+                        force: true,
+                    });
+                });
+
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (last_name_alert) => {
                 expect(last_name_alert).to.contains("Please type your business name");
@@ -50,9 +59,14 @@ describe("Validações PHPTravels", () => {
         });
 
         it("Validar alerta: Type your email", () => {
-            cy.xpath(elDemo.campo_business).type(dados_cliente.business, {
-                force: true,
-            });
+            cy.readFile(client)
+                .its("business")
+                .then((business) => {
+                    cy.xpath(elDemo.campo_business).type(business, {
+                        force: true,
+                    });
+                });
+
             cy.xpath(elDemo.botao_submit).click({ force: true });
             cy.on("window:alert", (business_alert) => {
                 expect(business_alert).to.contains("Please type your email name");
@@ -73,19 +87,35 @@ describe("Validações PHPTravels", () => {
                 .and("have.css", "font-weight", "700");
             cy.get(elDemo.titulo_form).invoke("text").should("contain", "Request Form");
             //Validar campos do formulário
-            cy.xpath(elDemo.campo_first_name)
-                .should("have.attr", "placeholder", "First Name")
-                .type(dados_cliente.first_name, { force: true });
+            cy.readFile(client)
+                .its("first_name")
+                .then((first_name) => {
+                    cy.xpath(elDemo.campo_first_name)
+                        .should("have.attr", "placeholder", "First Name")
+                        .type(first_name, { force: true });
+                });
+            cy.readFile(client)
+                .its("last_name")
+                .then((last_name) => {
+                    cy.xpath(elDemo.campo_last_name)
+                        .should("have.attr", "placeholder", "Last Name")
+                        .type(last_name, { force: true });
+                });
 
-            cy.xpath(elDemo.campo_last_name)
-                .should("have.attr", "placeholder", "Last Name")
-                .type(dados_cliente.last_name, { force: true });
-            cy.xpath(elDemo.campo_business)
-                .should("have.attr", "placeholder", "Business Name")
-                .type(dados_cliente.business, { force: true });
-            cy.xpath(elDemo.campo_email)
-                .should("have.attr", "placeholder", "Email")
-                .type(dados_cliente.email, { force: true });
+            cy.readFile(client)
+                .its("business")
+                .then((business) => {
+                    cy.xpath(elDemo.campo_business)
+                        .should("have.attr", "placeholder", "Business Name")
+                        .type(business, { force: true });
+                });
+            cy.readFile(client)
+                .its("email")
+                .then((email) => {
+                    cy.xpath(elDemo.campo_email)
+                        .should("have.attr", "placeholder", "Email")
+                        .type(email, { force: true });
+                });
 
             //Armazenar o valor dos números dentro dos elementos #numb1 e #numb2 para utiliza-los numa soma e gerar o resultado requerido
             cy.get(elDemo.digitos_resultado)
@@ -119,26 +149,22 @@ describe("Validações PHPTravels", () => {
             cy.xpath(elDemo.titulo_thankYou)
                 .should("be.visible")
                 .and("contain.text", "Thank you!");
-            cy.xpath(elDemo.thanks_text)
-                .should("be.visible")
-                .and("have.text", estaticos.thank_you_text)
-                .shot("7 - Demo - Thank You");
+            cy.readFile(texts)
+                .its("thank_you_text")
+                .then((thank_you_text) => {
+                    cy.xpath(elDemo.thanks_text)
+                        .should("be.visible")
+                        .and("have.text", thank_you_text)
+                        .shot("7 - Demo - Thank You");
+                });
         });
     });
     context("Cores do formulario", () => {
         it("Validar cor do container do formulario", () => {
-            cy.get(".demo_form.bgb.br8.p3")
-                .invoke("css", "background-color")
-                .then((color) => {
-                    expect(rgbhex(color)).to.eq("004bff");
-                });
+            cy.color_check(".demo_form.bgb.br8.p3", "background-color", "004bff");
         });
         it("Validar cor do botão submit", () => {
-            cy.xpath(elDemo.botao_submit)
-                .invoke("css", "background")
-                .then((color) => {
-                    expect(rgbhex(color)).to.contains("393939");
-                });
+            cy.color_check_xpath(elDemo.botao_submit, "background", "393939");
         });
     });
 });
