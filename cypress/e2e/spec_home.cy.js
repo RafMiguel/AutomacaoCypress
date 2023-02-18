@@ -5,6 +5,8 @@ import { elHome,elFlight } from "../support/elementos";
 
 describe("Home PHPTravels", () => {
 
+    const txt_home = 'home/home_texts.json'
+
     before(() => {
         cy.rota(".net/").log("Acessou site PHPTravels.net");
         
@@ -33,18 +35,40 @@ describe("Home PHPTravels", () => {
             .and('have.css','background-attachment','fixed')
         });
 
-        it("Coluna - You never roam alone", () => {
-            cy.get(elHome.info_titulo).first()
-                .should("have.text", txt_estatico.never_roam_alone)
-                .get(elHome.info_descricao).first()
-                .should("contain.text", txt_estatico.find_best_travel);
+        it("Validar texto e descrição da coluna - 'You never roam alone'", () => {
+        
+            
+            cy.get(elHome.info_titulo).contains('never roam alone').invoke('text').then((actual) =>{
+                cy.fixture(txt_home).then((to_be) =>{
+                    expect(actual).to.deep.eq(to_be.never_roam_alone)
+                })
+        
+            })
+            cy.get(elHome.info_descricao).contains('travel services').invoke('text').then((actual) =>{
+                cy.fixture(txt_home).then((to_be) =>{
+                    expect(actual).to.deep.contains(to_be.find_best_travel)
+                    cy.log('**_P.S: Tons of whitespaces in the current description text_**')
+                })
+                cy.shot('Home - Whitespaces in class "p.info_desc"')
+            })
+
         });
 
-        it("Coluna - Travel to anytime, anywhere", () => {
-            cy.get(elHome.info_titulo).eq(1)
-                .should("have.text", txt_estatico.travel_anytime)
-                .get(elHome.info_descricao).eq(1)
-                .should("contain.text", txt_estatico.no_limits);
+        it("Validar texto e descrição da coluna - Travel to anytime, anywhere", () => {
+            cy.get('.info-content').find(elHome.info_titulo).contains('anytime, anywhere').invoke('text').then((actual) =>{
+
+                cy.fixture(txt_home).then((to_be) =>{
+                    expect(actual).to.deep.eq(to_be.travel_anytime)
+                })
+            })
+                
+                cy.get(elHome.info_descricao).contains('No limits and boundaries ').invoke('text').then((actual) =>{
+                    cy.fixture(txt_home).then((to_be) =>{
+                        expect(actual).to.deep.contains(to_be.no_limits)
+                        cy.log('**_P.S: Tons of whitespaces in the current description text_**')
+                    })
+                })
+                
         });
 
         it("Coluna - Ease of mind, search filter and book", () => {
