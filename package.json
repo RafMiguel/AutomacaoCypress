@@ -6,7 +6,7 @@
   "scripts": {
     "delete:evidences": "rm -rf cypress/validation/",
     "open": "npm run delete:evidences && cypress open",
-    "cli": "npm run delete:evidences && cypress run --browser chrome"
+    "cli": "npm run delete:evidences && cypress run"
   },
   "keywords": [],
   "author": "",
