@@ -189,40 +189,61 @@ describe("Book a Hotel - PHPTravels", () => {
 
                     })
                 });
-        });
 
-
-    context('Swissotel container details', () => {
-        it('Swissotel - Hotel description', () => {
-            cy.get(elHotel.results.hotel_description).contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
-            cy.get('@swissotel').should('have.css','font-size','12px')
-        });
-
-        it('Swissotel - Prices column', () => {
-            cy.singapore_prices_column('1','12px','700','18px','792.00')
-            cy.get(elHotel.results.hotel_card_price).find(elHotel.results.hotel_period).first().should('have.text','9 Nights')
-        });
-
-        it('Swissotel - Ratings', () => {
-            cy.get(elHotel.results.main_container).find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
-            cy.get('@swissotel').find('.review__text').find(elHotel.results.hotel_star_rating).should('have.length',4)
-            cy.get('@swissotel').find('.rating__text').should('have.text','4 Ratings')
-        });
-
-        it('Swissotel - Approval badge', () =>{
+                context('Swissotel container details', () => {
+                    it('Swissotel - Hotel description', () => {
+                        cy.get(elHotel.results.hotel_description).contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
+                        cy.get('@swissotel').should('have.css','font-size','12px')
+                    });
             
-            cy.readFile('cypress/fixtures/approval_badge.txt').then((approval_badge) =>{
-                cy.get(elHotel.results.hotel_card_price).find('img[style]').should('be.visible').and('have.attr','src',approval_badge)
-            })
-        })
-
-        it('Swissotel - Details button', () => {
-            cy.get('.card-price').find('a[href]').eq(1).invoke('attr','href').then((href) =>{
-                expect(href).to.deep.include('swissotel-le-plaza-basel')
-            })
-
-            })
+                    it('Swissotel - Prices column', () => {
+                        cy.singapore_prices_column('1','12px','700','18px','792.00')
+                        cy.get(elHotel.results.hotel_card_price).find(elHotel.results.hotel_period).first().should('have.text','9 Nights')
+                    });
             
+                    it('Swissotel - Ratings', () => {
+                        cy.get(elHotel.results.main_container).find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
+                        cy.get('@swissotel').find('.review__text').find(elHotel.results.hotel_star_rating).should('have.length',4)
+                        cy.get('@swissotel').find('.rating__text').should('have.text','4 Ratings')
+                    });
+            
+                    it('Swissotel - Approval badge', () =>{
+                        
+                        cy.readFile('cypress/fixtures/approval_badge.txt').then((approval_badge) =>{
+                            cy.get(elHotel.results.hotel_card_price).find('img[style]').should('be.visible').and('have.attr','src',approval_badge)
+                        })
+                    })
+            
+                    it('Swissotel - Details button', () => {
+                        cy.get('.card-price').find('a[href]').eq(1).invoke('attr','href').then((href) =>{
+                            expect(href).to.deep.include('swissotel-le-plaza-basel')
+                        })
+            
+                        })
+                        
+            
+                        })
 
-            })
+                        context('Menu bar - Filter Search', () => {
+                            it('Validate tha we are in Filter Search section', () => {
+                                cy.get('.sticky-top').find('.card-header').as('filter_search').should('contain.text','Filter Search')
+                                cy.get('@filter_search').find('strong').should('have.css', 'font-weight', '700')
+                                cy.get('@filter_search').find('strong').should('have.css', 'color', 'rgb(16, 98, 254)') //>>>> validate direcly by rgb-color
+                               cy.get('@filter_search').find('strong').invoke('css', 'color').then((color) =>{
+                                expect(rgbHex(color)).to.eq('1062fe')
+                               })
+                            });
+
+                            it.only('Filter hotel by name (Rendezvous)', () => {
+                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').first().should('contain.text', 'Search by Name')
+                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.')
+
+                            });
+                        });
+        });
+
+
+    
+
+
     });
