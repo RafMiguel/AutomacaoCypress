@@ -234,16 +234,28 @@ describe("Book a Hotel - PHPTravels", () => {
                                })
                             });
 
-                            it.only('Filter hotel by name (Rendezvous)', () => {
+                            it('Filter hotel by name (Rendezvous)', () => {
+
                                 cy.get('.sticky-top').find('h3[class="title stroke-shape"]').first().should('contain.text', 'Search by Name')
-                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.')
+                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.').type('Rendezvous', {force:true})
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel).contains('Swissotel').should('not.be.visible').get(elHotel.results.per_hotel).first().should('be.visible').and('contain.text', 'Rendezvous')
+
+                            });
+
+                            it('Filter hotel by name (Swissotel)', () => {
+                                
+                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').first().should('contain.text', 'Search by Name')
+                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.').type('Swissotel', {force:true})
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel).contains('Rendezvous').should('not.be.visible').get(elHotel.results.per_hotel).eq(1).should('be.visible').and('contain.text', 'Swissotel')
 
                             });
                         });
         });
-
-
-    
-
 
     });
