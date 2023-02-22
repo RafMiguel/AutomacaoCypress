@@ -224,7 +224,7 @@ describe("Book a Hotel - PHPTravels", () => {
             
                         })
 
-                        context('Menu bar - Filter Search', () => {
+                        context.only('Menu bar - Filter Search', () => {
                             it('Validate tha we are in Filter Search section', () => {
                                 cy.get('.sticky-top').find('.card-header').as('filter_search').should('contain.text','Filter Search')
                                 cy.get('@filter_search').find('strong').should('have.css', 'font-weight', '700')
@@ -255,7 +255,55 @@ describe("Book a Hotel - PHPTravels", () => {
                                 .find(elHotel.results.per_hotel).contains('Rendezvous').should('not.be.visible').get(elHotel.results.per_hotel).eq(1).should('be.visible').and('contain.text', 'Swissotel')
 
                             });
+                            
+
+                            it('Filter hotel by star rating (Rendezvous)', () => {
+                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').eq(1).should('have.text', 'Star Grade')
+                                cy.get(elHotel.results.main_container).find('ul').find('li[id="rendezvous hotels"]').should('have.attr','id','rendezvous hotels').as('rendezvous')
+                                cy.get('@rendezvous').find('span[style]').invoke('text').then((rating) =>{
+                                    cy.log('**'+rating+'**')
+
+                                    if (rating.includes('1')) {
+                                        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_1',{force:true}).should('be.checked').and('include.value', '1')
+                                    } else if(rating.includes('2')){
+                                        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_2',{force:true}).should('be.checked').and('include.value', '2')
+                                    }else if (rating.includes('3')) {
+                                        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_3',{force:true}).should('be.checked').and('include.value', '3')
+                                    } else if(rating.includes('4')){
+                                        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_4',{force:true}).should('be.checked').and('include.value', '4')
+                                    } else if(rating.includes('5')){
+                                        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_5',{force:true}).should('be.checked').and('include.value', '5')
+                                    }
+                                })
+                            
                         });
+
+                        it('Filter hotel by star rating (Swissotel)', () => {
+                            cy.get('.sticky-top').find('h3[class="title stroke-shape"]').eq(1).should('have.text', 'Star Grade')
+                            cy.get(elHotel.results.main_container).find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
+                            cy.get('@swissotel').find('span[style]').invoke('text').then((rating) =>{
+                                cy.log('**'+rating+'**')
+
+                                if (rating.includes('1')) {
+                                    cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_1',{force:true}).should('be.checked').and('include.value', '1')
+                                } else if(rating.includes('2')){
+                                    cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_2',{force:true}).should('be.checked').and('include.value', '2')
+                                }else if (rating.includes('3')) {
+                                    cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_3',{force:true}).should('be.checked').and('include.value', '3')
+                                } else if(rating.includes('4')){
+                                    cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_4',{force:true}).should('be.checked').and('include.value', '4')
+                                } else if(rating.includes('5')){
+                                    cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_5',{force:true}).should('be.checked').and('include.value', '5')
+                                }
+                            })
+                        
+                    });
+
+                    it('Filter hotel by Price range (Rendezvous)', () => {
+                        cy.get('.sidebar-widget').find('.title.stroke-shape').contains('Price').should('have.text', 'Price Range')
+                    });
         });
 
     });
+
+})

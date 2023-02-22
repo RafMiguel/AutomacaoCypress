@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "delete:evidences": "rm -rf cypress/validation/",
-    "open": "npm run delete:evidences && cypress open",
+    "open": "cypress open",
     "cli": "npm run delete:evidences && cypress run"
   },
   "keywords": [],

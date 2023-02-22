@@ -165,7 +165,7 @@ describe("Validações PHPTravels", () => {
         });
         it("Validar cor do botão submit", () => {
             cy.xpath(elDemo.botao_submit).invoke('css', 'background').then((color) =>{
-                expect(color).to.include('rgb(57, 57, 57)')
+                expect(color).to.deep.include('rgb(57, 57, 57)')
             })
            // cy.color_check_xpath(elDemo.botao_submit, "background", "393939");
         });

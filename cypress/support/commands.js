@@ -99,6 +99,20 @@ Cypress.Commands.add(
     }
 );
 
+Cypress.Commands.add('if',() =>{
+    if (rating.includes('1')) {
+        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_1',{force:true}).should('be.checked').and('include.value', '1')
+    } else if(rating.includes('2')){
+        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_2',{force:true}).should('be.checked').and('include.value', '2')
+    }else if (rating.includes('3')) {
+        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_3',{force:true}).should('be.checked').and('include.value', '3')
+    } else if(rating.includes('4')){
+        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_4',{force:true}).should('be.checked').and('include.value', '4')
+    } else if(rating.includes('5')){
+        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_5',{force:true}).should('be.checked').and('include.value', '5')
+    }
+})
+
 /*
 Cypress.Commands.add("login", (email, senha) => {
     cy.clearCookies();

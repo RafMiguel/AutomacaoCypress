@@ -1,7 +1,7 @@
 /// <reference types="cypress"/>
 
-import txt_estatico from "../fixtures/estaticos.json";
-import { elHome,elFlight } from "../support/elementos";
+import { elHome,
+                elFlight } from "../support/elementos";
 
 describe("Home PHPTravels", () => {
 
@@ -39,17 +39,24 @@ describe("Home PHPTravels", () => {
         
             
             cy.get(elHome.info_titulo).contains('never roam alone').as('never_roam_alone').invoke('text').then((actual) =>{
-                cy.fixture(txt_home).then((to_be) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
                     expect(actual).to.deep.eq(to_be.never_roam_alone)
-                    cy.get(elHome.info_titulo).first().should('have.text', to_be.never_roam_alone)
+                    cy.get(elHome.info_titulo).first()
+                    .should('have.text', to_be.never_roam_alone)
                 })
         
             })
-            cy.get(elHome.info_descricao).contains('travel services').invoke('text').then((actual) =>{
-                cy.fixture(txt_home).then((to_be) =>{
+            cy.get(elHome.info_descricao)
+            .contains('travel services')
+            .invoke('text')
+            .then((actual) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
                     expect(actual).to.deep.contains(to_be.find_best_travel)
                     cy.log('**_P.S: Tons of whitespaces in the current description text_**')
-                    cy.get(elHome.info_descricao).first().should('contain.text', to_be.find_best_travel)
+                    cy.get(elHome.info_descricao).first()
+                    .should('contain.text', to_be.find_best_travel)
                 })
                 cy.shot('Home - Whitespaces in class "p.info_desc"')
             })
@@ -57,37 +64,57 @@ describe("Home PHPTravels", () => {
         });
 
         it("Validar texto, descrição e posição da coluna - Travel to anytime, anywhere", () => {
-            cy.get(elHome.info_titulo).contains('anytime, anywhere').invoke('text').then((actual) =>{
+            cy.get(elHome.info_titulo)
+            .contains('anytime, anywhere')
+            .invoke('text')
+            .then((actual) =>{
 
-                cy.fixture(txt_home).then((to_be) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
                     expect(actual).to.deep.eq(to_be.travel_anytime)
-                    cy.get(elHome.info_titulo).eq(1,'**_second element from class_**').should('have.text',to_be.travel_anytime)
+                    cy.get(elHome.info_titulo).eq(1,'**_second element from class_**')
+                    .should('have.text',to_be.travel_anytime)
                 })
             })
                 
-                cy.get(elHome.info_descricao).contains('No limits and boundaries ').invoke('text').then((actual) =>{
-                    cy.fixture(txt_home).then((to_be) =>{
+                cy.get(elHome.info_descricao)
+                .contains('No limits and boundaries ')
+                .invoke('text')
+                .then((actual) =>{
+                    cy.fixture(txt_home)
+                    .then((to_be) =>{
                         expect(actual).to.deep.contains(to_be.no_limits)
                         cy.log('**_P.S: Tons of whitespaces in the current description text_**')
-                        cy.get(elHome.info_descricao).eq(1,'**_second element from class_**').should('contain.text',to_be.no_limits)
+                        cy.get(elHome.info_descricao).eq(1,'**_second element from class_**')
+                        .should('contain.text',to_be.no_limits)
                     })
                 })
                 
         });
 
         it("Validar texto, descrição e posição da coluna - Ease of mind, search filter and book", () => {
-            cy.get(elHome.info_titulo).contains('Ease of mind').invoke('text').then((actual) =>{
-                cy.fixture(txt_home).then((to_be) =>{
+            cy.get(elHome.info_titulo)
+            .contains('Ease of mind')
+            .invoke('text')
+            .then((actual) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
                     expect(actual).to.deep.eq(to_be.ease_of_mind)
-                cy.get(elHome.info_titulo).eq(2, '**_third element from class_**').should('have.text',to_be.ease_of_mind)
+                cy.get(elHome.info_titulo).eq(2, '**_third element from class_**')
+                .should('have.text',to_be.ease_of_mind)
                 })
             })
 
-            cy.get(elHome.info_descricao).contains("Let's help you").invoke('text').then((actual) =>{
-                cy.fixture(txt_home).then((to_be) =>{
+            cy.get(elHome.info_descricao)
+            .contains("Let's help you")
+            .invoke('text')
+            .then((actual) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
                     expect(actual).to.deep.contains(to_be.lets_help)
                     cy.log('**_P.S: Tons of whitespaces in the current description text_**')
-                cy.get(elHome.info_descricao).eq(2, '**_third element from class_**').should('contain.text', to_be.lets_help)
+                cy.get(elHome.info_descricao).eq(2, '**_third element from class_**')
+                .should('contain.text', to_be.lets_help)
                 })
             })
         });
@@ -96,10 +123,15 @@ describe("Home PHPTravels", () => {
 
     context("Top Flights Destination", () => {
         it('Validar título "Top Flight Destinations" e sua cor', () => {
-            cy.get("h2").eq(1)
+            cy.get("h2").eq(1).as('top_flight_title')
             .should("be.visible")
-            .and("have.text", txt_estatico.top_flight)
-            .and("have.css", "font-weight", "700").as("top_flight_title");
+            .invoke('text')
+            .then((actual) =>{
+                cy.fixture(txt_home)
+                .then((to_be) =>{
+                    expect(actual).to.deep.eq(to_be.top_flight)
+                })
+            })
 
             cy.color_check('@top_flight_title','color','0d233e')
 
@@ -121,7 +153,8 @@ describe("Home PHPTravels", () => {
 
             it('Validar cor e propriedade da classe de preços na tabela', () => {
                 cy.color_check_xpath(elHome.top_flight_only_prices,'color','0d233e')
-                cy.xpath(elHome.top_flight_only_prices).should('have.css','font-weight','700')
+                cy.xpath(elHome.top_flight_only_prices)
+                .should('have.css','font-weight','700')
             });
 });
   
@@ -159,12 +192,17 @@ describe("Home PHPTravels", () => {
             });
 
             it('Validar redirecionamento ao clicar no voo Mumbai → Dubai', () => {
-                cy.get('h6').eq(6).click({force:true},{timeout:10000})
-                cy.url().should('include','/bom/dxb/').then((href) =>{
+                cy.get('h6').eq(6)
+                .click({force:true},{timeout:10000})
+                cy.url()
+                .should('include','/bom/dxb/')
+                .then((href) =>{
                     cy.writeFile('cypress/validation/results/home/saved_flight_url.txt', href)
                     cy.readFile('cypress/validation/results/home/saved_flight_url.txt').should('exist')
                 })
-                cy.get(elFlight.destination_titulo).first().should('contain.text','BOM').and('contain.text','DXB')
+                cy.get(elFlight.destination_titulo).first()
+                .should('contain.text','BOM')
+                .and('contain.text','DXB')
             });
 
         });
