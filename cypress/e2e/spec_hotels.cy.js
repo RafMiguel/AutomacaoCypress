@@ -2,12 +2,14 @@
 
 import rgbHex from "rgb-hex";
 import { elHome, elHotel } from "../support/elementos";
-import txt_estatico from "../fixtures/estaticos.json"
+import txt from "../fixtures/estaticos.json"
 import date from "../support/date"
 
 
 
 describe("Book a Hotel - PHPTravels", () => {
+
+    const txt_rendez = 'cypress/validation/results/hotel/rendezvous/about_rendezvous.txt'
 
     context("Hotel page", () => {
         it("Go to hotel menu", () => {
@@ -20,7 +22,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.url()
             .should("eq", "https://phptravels.net/hotels");
             cy.get(elHotel.search_hotel_title)
-            .should("have.text", txt_estatico.search_best_hotels);
+            .should("have.text", txt.search_best_hotels);
         });
     })
 
@@ -97,7 +99,7 @@ describe("Book a Hotel - PHPTravels", () => {
             })
             cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
-            .should('have.text',txt_estatico.singapore_hotels_search)
+            .should('have.text',txt.singapore_hotels_search)
             cy.get('@results').find('strong')
             .contains('9 Nights').as('days_qtd')
             .invoke('css','font-weight')
@@ -144,7 +146,9 @@ describe("Book a Hotel - PHPTravels", () => {
 
                 cy.writeFile('cypress/validation/results/hotel/hotel_results.txt',results)
                 cy.writeFile('cypress/validation/results/hotel/hotel_results.json',results)
-                cy.readFile('cypress/validation/results/hotel/hotel_results.txt').should('deep.include','Rendezvous Hotels').and('deep.include','Swissotel Le Plaza Basel')
+                cy.readFile('cypress/validation/results/hotel/hotel_results.txt')
+                .should('deep.include','Rendezvous Hotels')
+                .and('deep.include','Swissotel Le Plaza Basel')
                 
             cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
 
@@ -165,102 +169,169 @@ describe("Book a Hotel - PHPTravels", () => {
                 cy.get(elHotel.results.hotel_description)
                 .contains('Rendezvous')
                 .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
-                cy.get('@rendezvous').should('have.css','font-size','12px')
+                cy.get('@rendezvous')
+                .should('have.css','font-size','12px')
                 })
 
                 it('Rendezvous - Prices column', () => {
                     cy.singapore_prices_column('0','12px','700','18px','841.50')
-                    cy.get(elHotel.results.hotel_card_price).find(elHotel.results.hotel_period).first().should('have.text','9 Nights')
+                    cy.get(elHotel.results.hotel_card_price)
+                    .find(elHotel.results.hotel_period).first()
+                    .should('have.text','9 Nights')
                 });
 
                 it('Rendezvous - Ratings', () => {
-                    cy.get(elHotel.results.main_container).find('ul').find('li[id="rendezvous hotels"]').should('have.attr','id','rendezvous hotels').as('rendezvous')
-                    cy.get('@rendezvous').find('.review__text').find(elHotel.results.hotel_star_rating).should('have.length',2)
-                    cy.get('@rendezvous').find('.rating__text').should('have.text','2 Ratings')
+                    cy.get(elHotel.results.main_container)
+                    .find('ul')
+                    .find('li[id="rendezvous hotels"]')
+                    .should('have.attr','id','rendezvous hotels').as('rendezvous')
+                    cy.get('@rendezvous')
+                    .find('.review__text')
+                    .find(elHotel.results.hotel_star_rating)
+                    .should('have.length',2)
+                    cy.get('@rendezvous')
+                    .find('.rating__text')
+                    .should('have.text','2 Ratings')
                     
                 });
 
                 it('Rendezvous - Details button', () => {
-                    cy.get('.card-price').find('a[href]').first().invoke('attr','href').then((href) =>{
+                    cy.get('.card-price')
+                    .find('a[href]').first()
+                    .invoke('attr','href')
+                    .then((href) =>{
                         expect(href).to.deep.include('rendezvous-hotel')
                     })
                     
-                    
-
                     })
                 });
 
                 context('Swissotel container details', () => {
                     it('Swissotel - Hotel description', () => {
-                        cy.get(elHotel.results.hotel_description).contains('Swiss').should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
-                        cy.get('@swissotel').should('have.css','font-size','12px')
+                        cy.get(elHotel.results.hotel_description)
+                        .contains('Swiss')
+                        .should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
+                        cy.get('@swissotel')
+                        .should('have.css','font-size','12px')
                     });
             
                     it('Swissotel - Prices column', () => {
                         cy.singapore_prices_column('1','12px','700','18px','792.00')
-                        cy.get(elHotel.results.hotel_card_price).find(elHotel.results.hotel_period).first().should('have.text','9 Nights')
+                        cy.get(elHotel.results.hotel_card_price)
+                        .find(elHotel.results.hotel_period).first()
+                        .should('have.text','9 Nights')
                     });
             
                     it('Swissotel - Ratings', () => {
-                        cy.get(elHotel.results.main_container).find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
-                        cy.get('@swissotel').find('.review__text').find(elHotel.results.hotel_star_rating).should('have.length',4)
-                        cy.get('@swissotel').find('.rating__text').should('have.text','4 Ratings')
+                        cy.get(elHotel.results.main_container)
+                        .find('ul')
+                        .find('li[id="swissotel le plaza basel"]')
+                        .should('have.attr','id','swissotel le plaza basel').as('swissotel')
+                        cy.get('@swissotel')
+                        .find('.review__text')
+                        .find(elHotel.results.hotel_star_rating)
+                        .should('have.length',4)
+                        cy.get('@swissotel')
+                        .find('.rating__text')
+                        .should('have.text','4 Ratings')
                     });
             
                     it('Swissotel - Approval badge', () =>{
                         
-                        cy.readFile('cypress/fixtures/approval_badge.txt').then((approval_badge) =>{
-                            cy.get(elHotel.results.hotel_card_price).find('img[style]').should('be.visible').and('have.attr','src',approval_badge)
+                        cy.readFile('cypress/fixtures/approval_badge.txt')
+                        .then((approval_badge) =>{
+                            cy.get(elHotel.results.hotel_card_price)
+                            .find('img[style]')
+                            .should('be.visible')
+                            .and('have.attr','src',approval_badge)
                         })
                     })
             
                     it('Swissotel - Details button', () => {
-                        cy.get('.card-price').find('a[href]').eq(1).invoke('attr','href').then((href) =>{
+                        cy.get('.card-price')
+                        .find('a[href]').eq(1)
+                        .invoke('attr','href')
+                        .then((href) =>{
                             expect(href).to.deep.include('swissotel-le-plaza-basel')
                         })
             
                         })
                         
-            
                         })
 
-                        context.only('Menu bar - Filter Search', () => {
+                        context('Menu bar - Filter Search', () => {
                             it('Validate tha we are in Filter Search section', () => {
-                                cy.get('.sticky-top').find('.card-header').as('filter_search').should('contain.text','Filter Search')
-                                cy.get('@filter_search').find('strong').should('have.css', 'font-weight', '700')
-                                cy.get('@filter_search').find('strong').should('have.css', 'color', 'rgb(16, 98, 254)') //>>>> validate direcly by rgb-color
-                               cy.get('@filter_search').find('strong').invoke('css', 'color').then((color) =>{
+                                cy.get('.sticky-top')
+                                .find('.card-header').as('filter_search')
+                                .should('contain.text','Filter Search')
+                                cy.get('@filter_search')
+                                .find('strong')
+                                .should('have.css', 'font-weight', '700')
+                                cy.get('@filter_search')
+                                .find('strong')
+                                .should('have.css', 'color', 'rgb(16, 98, 254)') //>>>> validate direcly by rgb-color
+                               cy.get('@filter_search')
+                               .find('strong')
+                               .invoke('css', 'color')
+                               .then((color) =>{
                                 expect(rgbHex(color)).to.eq('1062fe')
                                })
                             });
 
                             it('Filter hotel by name (Rendezvous)', () => {
 
-                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').first().should('contain.text', 'Search by Name')
-                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.').type('Rendezvous', {force:true})
+                                cy.get('.sticky-top')
+                                .find('h3[class="title stroke-shape"]').first()
+                                .should('contain.text', 'Search by Name')
+                                cy.get('.sidebar-widget')
+                                .find('input[type="text"]').first()
+                                .should('have.attr', 'placeholder', 'Hotel name.')
+                                .type('Rendezvous', {force:true})
 
                                 cy.get(elHotel.results.main_container)
                                 .find('ul').children()
-                                .find(elHotel.results.per_hotel).contains('Swissotel').should('not.be.visible').get(elHotel.results.per_hotel).first().should('be.visible').and('contain.text', 'Rendezvous')
+                                .find(elHotel.results.per_hotel)
+                                .contains('Swissotel')
+                                .should('not.be.visible')
+                                .get(elHotel.results.per_hotel).first()
+                                .should('be.visible')
+                                .and('contain.text', 'Rendezvous')
 
                             });
 
                             it('Filter hotel by name (Swissotel)', () => {
                                 
-                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').first().should('contain.text', 'Search by Name')
-                                cy.get('.sidebar-widget').find('input[type="text"]').first().should('have.attr', 'placeholder', 'Hotel name.').type('Swissotel', {force:true})
+                                cy.get('.sticky-top')
+                                .find('h3[class="title stroke-shape"]').first()
+                                .should('contain.text', 'Search by Name')
+                                cy.get('.sidebar-widget')
+                                .find('input[type="text"]').first()
+                                .should('have.attr', 'placeholder', 'Hotel name.')
+                                .type('Swissotel', {force:true})
 
                                 cy.get(elHotel.results.main_container)
                                 .find('ul').children()
-                                .find(elHotel.results.per_hotel).contains('Rendezvous').should('not.be.visible').get(elHotel.results.per_hotel).eq(1).should('be.visible').and('contain.text', 'Swissotel')
+                                .find(elHotel.results.per_hotel)
+                                .contains('Rendezvous')
+                                .should('not.be.visible')
+                                .get(elHotel.results.per_hotel).eq(1)
+                                .should('be.visible')
+                                .and('contain.text', 'Swissotel')
 
                             });
                             
 
                             it('Filter hotel by star rating (Rendezvous)', () => {
-                                cy.get('.sticky-top').find('h3[class="title stroke-shape"]').eq(1).should('have.text', 'Star Grade')
-                                cy.get(elHotel.results.main_container).find('ul').find('li[id="rendezvous hotels"]').should('have.attr','id','rendezvous hotels').as('rendezvous')
-                                cy.get('@rendezvous').find('span[style]').invoke('text').then((rating) =>{
+                                cy.get('.sticky-top')
+                                .find('h3[class="title stroke-shape"]').eq(1)
+                                .should('have.text', 'Star Grade')
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').find('li[id="rendezvous hotels"]')
+                                .should('have.attr','id','rendezvous hotels').as('rendezvous')
+                                cy.get('@rendezvous')
+                                .find('span[style]')
+                                .invoke('text')
+                                .then((rating) =>{
                                     cy.log('**'+rating+'**')
 
                                     if (rating.includes('1')) {
@@ -279,9 +350,16 @@ describe("Book a Hotel - PHPTravels", () => {
                         });
 
                         it('Filter hotel by star rating (Swissotel)', () => {
-                            cy.get('.sticky-top').find('h3[class="title stroke-shape"]').eq(1).should('have.text', 'Star Grade')
-                            cy.get(elHotel.results.main_container).find('ul').find('li[id="swissotel le plaza basel"]').should('have.attr','id','swissotel le plaza basel').as('swissotel')
-                            cy.get('@swissotel').find('span[style]').invoke('text').then((rating) =>{
+                            cy.get('.sticky-top')
+                            .find('h3[class="title stroke-shape"]').eq(1)
+                            .should('have.text', 'Star Grade')
+                            cy.get(elHotel.results.main_container)
+                            .find('ul').find('li[id="swissotel le plaza basel"]')
+                            .should('have.attr','id','swissotel le plaza basel').as('swissotel')
+                            cy.get('@swissotel')
+                            .find('span[style]')
+                            .invoke('text')
+                            .then((rating) =>{
                                 cy.log('**'+rating+'**')
 
                                 if (rating.includes('1')) {
@@ -303,6 +381,44 @@ describe("Book a Hotel - PHPTravels", () => {
                         cy.get('.sidebar-widget').find('.title.stroke-shape').contains('Price').should('have.text', 'Price Range')
                     });
         });
+
+    });
+
+    context.only('Details page', () => {
+before(() => {
+    cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
+        cy.visit(current_url)
+    })
+})
+    context('Details page - Rendezvous', () => {
+            it('Enter Rendezvous details page', () => {
+                cy.get('.card-price')
+                .find('a[href]').first()
+                .click({force:true})
+                cy.get('.col-md-7').find('h3')
+                .should('contain.text', 'Rendezvous Hotels')
+                cy.get('.col-md-7').find('.mr-2')
+                .should('have.text', 'Singapore, Rendezvous Hotels')
+            });
+
+            it('Validate title and text in "About Rendezvous Hotels"', () => {
+                cy.get('#description')
+                .find('h3')
+                .should('be.visible').and('have.text', 'About Rendezvous Hotels')
+                cy.get('#description')
+                .find('p[class="py-3"]').as('about_rendezvous')
+                .should('be.visible')
+                .invoke('text')
+                .then((desc) =>{
+                    cy.writeFile(txt_rendez, desc)
+                    cy.readFile(txt_rendez).then((about_rendezvous) =>{
+                        cy.get('@about_rendezvous').should('have.text', about_rendezvous)
+                    })
+                })
+               
+            });
+    });
+ 
 
     });
 
