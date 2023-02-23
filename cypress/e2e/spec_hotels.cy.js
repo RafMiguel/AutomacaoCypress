@@ -384,7 +384,7 @@ describe("Book a Hotel - PHPTravels", () => {
 
     });
 
-    context('Details page', () => {
+    context.only('Details page', () => {
 before(() => {
     cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
         cy.visit(current_url)
