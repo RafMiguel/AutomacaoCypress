@@ -20,10 +20,10 @@ module.exports = defineConfig({
             json: true,
             timestamp: "dd-mm-yyyy_HH-MM",
         },
-        retries: {
-            openMode: 1,
-            runMode: 1,
-        },
+       // retries: {
+       //     openMode: 1,
+       //     runMode: 1,
+     //   },
     },
     setupNodeEvents(on, config) {
         addMatchImageSnapshotPlugin(on, config);

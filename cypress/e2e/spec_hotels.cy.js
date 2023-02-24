@@ -69,7 +69,7 @@ describe("Book a Hotel - PHPTravels", () => {
         it('Search a available hotel using search parameters', () => {
 
             cy.log('**_Clicking on "Search by City" search field_**')
-            cy.search_hotel_by_city('Singapore','Singapore,Singapore')
+            cy.search_hotel_by_city('Istanbul','Istanbul,Turkey')
             cy.get(elHotel.calendar_checkin)
             .invoke('attr','value',date.nine_days_before_today())
             .log('**_Will pick the current date minus 9 days from today_**')
@@ -99,7 +99,7 @@ describe("Book a Hotel - PHPTravels", () => {
             })
             cy.get(elHotel.results_at_menu_bar).as('results')
             .find('h2[class="sec__title_list"]')
-            .should('have.text',txt.singapore_hotels_search)
+            .should('have.text',txt.instanbul_hotels_search)
             cy.get('@results').find('strong')
             .contains('9 Nights').as('days_qtd')
             .invoke('css','font-weight')
@@ -124,7 +124,7 @@ describe("Book a Hotel - PHPTravels", () => {
     });
 
     context('Exploring the results of the search above', () => {
-        beforeEach(() => {
+        before(() => {
             cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
                 cy.visit(current_url)
             })
@@ -135,7 +135,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.get(elHotel.results.main_container)
             .find('ul').children()
             .find(elHotel.results.per_hotel).as('lenght_results')
-            .should('have.length.above',0)
+            .should('have.length.at.least',1)
             cy.get('@lenght_results')
             .find(elHotel.results.per_hotel_name)
             .invoke('text')
@@ -147,8 +147,9 @@ describe("Book a Hotel - PHPTravels", () => {
                 cy.writeFile('cypress/validation/results/hotel/hotel_results.txt',results)
                 cy.writeFile('cypress/validation/results/hotel/hotel_results.json',results)
                 cy.readFile('cypress/validation/results/hotel/hotel_results.txt')
-                .should('deep.include','Rendezvous Hotels')
-                .and('deep.include','Swissotel Le Plaza Basel')
+                .should('deep.include','Tria Hotel Istanbul Special')
+                .and('deep.include','Grand Plaza Apartments')
+                .and('deep.include','Alzer Hotel Istanbul')
                 
             cy.log('Cypress will storage the name of hotels returned from the search in a txt and a json file')
 
@@ -159,107 +160,176 @@ describe("Book a Hotel - PHPTravels", () => {
             })
         })
 
-        it('Validate if the hotels returned are from Singapore', () => {
+        it('Validate if the hotels returned are from Istanbul', () => {
             cy.get(elHotel.results.hotel_location)
-            .should('contain.text','singapore')
+            .should('contain.text','istanbul')
         });
 
-        context('Rendezvous container details', () => {
-            it('Rendezvous - Hotel description', () => {
+        context('Tria Hotel container details', () => {
+            it('Tria - Hotel description', () => {
                 cy.get(elHotel.results.hotel_description)
-                .contains('Rendezvous')
-                .should('have.text','Rendezvous Hotel Singapore by Far East Hospitality ').as('rendezvous')
-                cy.get('@rendezvous')
+                .contains('Tria Hotel')
+                .should('have.text','Tria Hotel, Istanbul, Turkey ').as('tria')
+                cy.get('@tria')
                 .should('have.css','font-size','12px')
                 })
 
-                it('Rendezvous - Prices column', () => {
-                    cy.singapore_prices_column('0','12px','700','18px','841.50')
+                it('Tria - Prices column', () => {
+                    cy.istanbul_prices_column('0','12px','700','18px','346.50')
                     cy.get(elHotel.results.hotel_card_price)
                     .find(elHotel.results.hotel_period).first()
                     .should('have.text','9 Nights')
                 });
 
-                it('Rendezvous - Ratings', () => {
+                it('Tria - Ratings', () => {
                     cy.get(elHotel.results.main_container)
                     .find('ul')
-                    .find('li[id="rendezvous hotels"]')
-                    .should('have.attr','id','rendezvous hotels').as('rendezvous')
-                    cy.get('@rendezvous')
+                    .find('li[id="tria hotel istanbul special"]')
+                    .should('have.attr','id','tria hotel istanbul special').as('tria')
+                    cy.get('@tria')
                     .find('.review__text')
                     .find(elHotel.results.hotel_star_rating)
-                    .should('have.length',2)
-                    cy.get('@rendezvous')
+                    .should('have.length',5)
+                    cy.get('@tria')
                     .find('.rating__text')
-                    .should('have.text','2 Ratings')
+                    .should('have.text','5 Ratings')
                     
                 });
 
-                it('Rendezvous - Details button', () => {
+                it('Tria - Approval badge', () =>{
+                                
+                    cy.readFile('cypress/fixtures/approval_badge.txt')
+                    .then((approval_badge) =>{
+                        cy.get(elHotel.results.hotel_card_price)
+                        .find('img[style]').eq(0)
+                        .should('be.visible')
+                        .and('have.attr','src',approval_badge)
+                    })
+                })
+
+                it('Tria - Details button', () => {
                     cy.get('.card-price')
                     .find('a[href]').first()
                     .invoke('attr','href')
                     .then((href) =>{
-                        expect(href).to.deep.include('rendezvous-hotel')
+                        expect(href).to.deep.include('tria-hotel')
                     })
                     
                     })
                 });
 
-                context('Swissotel container details', () => {
-                    it('Swissotel - Hotel description', () => {
+                context('Grand Plaza container details', () => {
+                    it('Grand Plaza - Hotel description', () => {
                         cy.get(elHotel.results.hotel_description)
-                        .contains('Swiss')
-                        .should('have.text','Swissôtel Le Plaza Basel, Messeplatz, Basle, Swis ').as('swissotel')
-                        cy.get('@swissotel')
+                        .contains('Grand')
+                        .should('have.text','Grand Plaza Apartments, South Highlander Way, Howe ').as('grand_plaza')
+                        cy.get('@grand_plaza')
                         .should('have.css','font-size','12px')
                     });
             
-                    it('Swissotel - Prices column', () => {
-                        cy.singapore_prices_column('1','12px','700','18px','792.00')
+                    it('Grand Plaza - Prices column', () => {
+                        cy.istanbul_prices_column('1','12px','700','18px','346.50')
                         cy.get(elHotel.results.hotel_card_price)
-                        .find(elHotel.results.hotel_period).first()
+                        .find(elHotel.results.hotel_period).eq(1)
                         .should('have.text','9 Nights')
                     });
             
-                    it('Swissotel - Ratings', () => {
+                    it('Grand Plaza - Ratings', () => {
                         cy.get(elHotel.results.main_container)
                         .find('ul')
-                        .find('li[id="swissotel le plaza basel"]')
-                        .should('have.attr','id','swissotel le plaza basel').as('swissotel')
-                        cy.get('@swissotel')
+                        .find('li[id="grand plaza apartments"]')
+                        .should('have.attr','id','grand plaza apartments').as('grand_plaza')
+                        cy.get('@grand_plaza')
                         .find('.review__text')
                         .find(elHotel.results.hotel_star_rating)
                         .should('have.length',4)
-                        cy.get('@swissotel')
+                        cy.get('@grand_plaza')
                         .find('.rating__text')
                         .should('have.text','4 Ratings')
                     });
             
-                    it('Swissotel - Approval badge', () =>{
+                    it('Grand Plaza - Approval badge', () =>{
                         
                         cy.readFile('cypress/fixtures/approval_badge.txt')
                         .then((approval_badge) =>{
                             cy.get(elHotel.results.hotel_card_price)
-                            .find('img[style]')
+                            .find('img[style]').eq(1)
                             .should('be.visible')
                             .and('have.attr','src',approval_badge)
                         })
                     })
             
-                    it('Swissotel - Details button', () => {
+                    it('Grand Plaza - Details button', () => {
                         cy.get('.card-price')
                         .find('a[href]').eq(1)
                         .invoke('attr','href')
                         .then((href) =>{
-                            expect(href).to.deep.include('swissotel-le-plaza-basel')
+                            expect(href).to.deep.include('grand-plaza')
                         })
             
                         })
                         
                         })
 
+                        context('Alzer Hotel container details', () => {
+                            it('Alzer - Hotel description', () => {
+                                cy.get(elHotel.results.hotel_description)
+                                .contains('Alzer')
+                                .should('have.text','Alzer Hotel, Fatih, Istanbul, Turkey ').as('alzer')
+                                cy.get('@alzer')
+                                .should('have.css','font-size','12px')
+                            });
+                    
+                            it('Alzer - Prices column', () => {
+                                cy.istanbul_prices_column('2','12px','700','18px','693.00')
+                                cy.get(elHotel.results.hotel_card_price)
+                                .find(elHotel.results.hotel_period).eq(2)
+                                .should('have.text','9 Nights')
+                            });
+                    
+                            it('Alzer - Ratings', () => {
+                                cy.get(elHotel.results.main_container)
+                                .find('ul')
+                                .find('li[id="alzer hotel istanbul"]')
+                                .should('have.attr','id','alzer hotel istanbul').as('alzer')
+                                cy.get('@alzer')
+                                .find('.review__text')
+                                .find(elHotel.results.hotel_star_rating)
+                                .should('have.length',4)
+                                cy.get('@alzer')
+                                .find('.rating__text')
+                                .should('have.text','4 Ratings')
+                            });
+                    
+                            it('Alzer - Approval badge', () =>{
+                                
+                                cy.readFile('cypress/fixtures/approval_badge.txt')
+                                .then((approval_badge) =>{
+                                    cy.get(elHotel.results.hotel_card_price)
+                                    .find('img[style]').eq(2)
+                                    .should('be.visible')
+                                    .and('have.attr','src',approval_badge)
+                                })
+                            })
+                    
+                            it('Alzer - Details button', () => {
+                                cy.get('.card-price')
+                                .find('a[href]').eq(2)
+                                .invoke('attr','href')
+                                .then((href) =>{
+                                    expect(href).to.deep.include('alzer-hotel')
+                                })
+                    
+                                })
+                                
+                                })
+
                         context('Menu bar - Filter Search', () => {
+                            beforeEach(() => {
+                                cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
+                                    cy.visit(current_url)
+                                })
+                            });
                             it('Validate tha we are in Filter Search section', () => {
                                 cy.get('.sticky-top')
                                 .find('.card-header').as('filter_search')
@@ -278,7 +348,7 @@ describe("Book a Hotel - PHPTravels", () => {
                                })
                             });
 
-                            it('Filter hotel by name (Rendezvous)', () => {
+                            it('Filter hotel by name (Tria Hotel)', () => {
 
                                 cy.get('.sticky-top')
                                 .find('h3[class="title stroke-shape"]').first()
@@ -286,20 +356,27 @@ describe("Book a Hotel - PHPTravels", () => {
                                 cy.get('.sidebar-widget')
                                 .find('input[type="text"]').first()
                                 .should('have.attr', 'placeholder', 'Hotel name.')
-                                .type('Rendezvous', {force:true})
+                                .type('Tria Hotel', {force:true})
 
                                 cy.get(elHotel.results.main_container)
                                 .find('ul').children()
                                 .find(elHotel.results.per_hotel)
-                                .contains('Swissotel')
+                                .contains('Grand Plaza')
                                 .should('not.be.visible')
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel)
+                                .contains('Alzer Hotel')
+                                .should('not.be.visible')
+
                                 .get(elHotel.results.per_hotel).first()
                                 .should('be.visible')
-                                .and('contain.text', 'Rendezvous')
+                                .and('contain.text', 'Tria Hotel Istanbul Special')
 
                             });
 
-                            it('Filter hotel by name (Swissotel)', () => {
+                            it('Filter hotel by name (Grand Plaza)', () => {
                                 
                                 cy.get('.sticky-top')
                                 .find('h3[class="title stroke-shape"]').first()
@@ -307,28 +384,63 @@ describe("Book a Hotel - PHPTravels", () => {
                                 cy.get('.sidebar-widget')
                                 .find('input[type="text"]').first()
                                 .should('have.attr', 'placeholder', 'Hotel name.')
-                                .type('Swissotel', {force:true})
+                                .type('Grand Plaza', {force:true})
 
                                 cy.get(elHotel.results.main_container)
                                 .find('ul').children()
                                 .find(elHotel.results.per_hotel)
-                                .contains('Rendezvous')
+                                .contains('Tria Hotel')
                                 .should('not.be.visible')
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel)
+                                .contains('Alzer Hotel')
+                                .should('not.be.visible')
+
                                 .get(elHotel.results.per_hotel).eq(1)
                                 .should('be.visible')
-                                .and('contain.text', 'Swissotel')
+                                .and('contain.text', 'Grand Plaza Apartments')
+
+                            });
+
+                            it('Filter hotel by name (Alzer Hotel)', () => {
+                                
+                                cy.get('.sticky-top')
+                                .find('h3[class="title stroke-shape"]').first()
+                                .should('contain.text', 'Search by Name')
+                                cy.get('.sidebar-widget')
+                                .find('input[type="text"]').first()
+                                .should('have.attr', 'placeholder', 'Hotel name.')
+                                .type('Alzer Hotel', {force:true})
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel)
+                                .contains('Tria Hotel')
+                                .should('not.be.visible')
+
+                                cy.get(elHotel.results.main_container)
+                                .find('ul').children()
+                                .find(elHotel.results.per_hotel)
+                                .contains('Grand Plaza')
+                                .should('not.be.visible')
+
+                                .get(elHotel.results.per_hotel).eq(2)
+                                .should('be.visible')
+                                .and('contain.text', 'Alzer Hotel Istanbul')
 
                             });
                             
 
-                            it('Filter hotel by star rating (Rendezvous)', () => {
+                            it('Filter hotel by star rating (Tria Hotel)', () => {
                                 cy.get('.sticky-top')
                                 .find('h3[class="title stroke-shape"]').eq(1)
                                 .should('have.text', 'Star Grade')
                                 cy.get(elHotel.results.main_container)
-                                .find('ul').find('li[id="rendezvous hotels"]')
-                                .should('have.attr','id','rendezvous hotels').as('rendezvous')
-                                cy.get('@rendezvous')
+                                .find('ul').find('li[id="tria hotel istanbul special"]')
+                                .should('have.attr','id','tria hotel istanbul special').as('tria')
+                                cy.get('@tria')
                                 .find('span[style]')
                                 .invoke('text')
                                 .then((rating) =>{
@@ -349,14 +461,14 @@ describe("Book a Hotel - PHPTravels", () => {
                             
                         });
 
-                        it('Filter hotel by star rating (Swissotel)', () => {
+                        it('Filter hotel by star rating (Grand Plaza)', () => {
                             cy.get('.sticky-top')
                             .find('h3[class="title stroke-shape"]').eq(1)
                             .should('have.text', 'Star Grade')
                             cy.get(elHotel.results.main_container)
-                            .find('ul').find('li[id="swissotel le plaza basel"]')
-                            .should('have.attr','id','swissotel le plaza basel').as('swissotel')
-                            cy.get('@swissotel')
+                            .find('ul').find('li[id="grand plaza apartments"]')
+                            .should('have.attr','id','grand plaza apartments').as('grand_plaza')
+                            cy.get('@grand_plaza')
                             .find('span[style]')
                             .invoke('text')
                             .then((rating) =>{
@@ -377,8 +489,39 @@ describe("Book a Hotel - PHPTravels", () => {
                         
                     });
 
+                    it('Filter hotel by star rating (Alzer Hotel)', () => {
+                        cy.get('.sticky-top')
+                        .find('h3[class="title stroke-shape"]').eq(1)
+                        .should('have.text', 'Star Grade')
+                        cy.get(elHotel.results.main_container)
+                        .find('ul').find('li[id="alzer hotel istanbul"]')
+                        .should('have.attr','id','alzer hotel istanbul').as('alzer')
+                        cy.get('@alzer')
+                        .find('span[style]')
+                        .invoke('text')
+                        .then((rating) =>{
+                            cy.log('**'+rating+'**')
+
+                            if (rating.includes('1')) {
+                                cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_1',{force:true}).should('be.checked').and('include.value', '1')
+                            } else if(rating.includes('2')){
+                                cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_2',{force:true}).should('be.checked').and('include.value', '2')
+                            }else if (rating.includes('3')) {
+                                cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_3',{force:true}).should('be.checked').and('include.value', '3')
+                            } else if(rating.includes('4')){
+                                cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_4',{force:true}).should('be.checked').and('include.value', '4')
+                            } else if(rating.includes('5')){
+                                cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_5',{force:true}).should('be.checked').and('include.value', '5')
+                            }
+                        })
+                    
+                });
+
                     it('Filter hotel by Price range (Rendezvous)', () => {
-                        cy.get('.sidebar-widget').find('.title.stroke-shape').contains('Price').should('have.text', 'Price Range')
+                        cy.get('.sidebar-widget')
+                        .find('.title.stroke-shape')
+                        .contains('Price')
+                        .should('have.text', 'Price Range')
                     });
         });
 
@@ -389,34 +532,93 @@ before(() => {
     cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
         cy.visit(current_url)
     })
+    cy.cookies()
 })
-    context('Details page - Rendezvous', () => {
-            it('Enter Rendezvous details page', () => {
+    context('Details page - Tria Hotel', () => {
+        
+            it('Enter Tria Hotel details page', () => {
+                
                 cy.get('.card-price')
                 .find('a[href]').first()
                 .click({force:true})
-                cy.get('.col-md-7').find('h3')
-                .should('contain.text', 'Rendezvous Hotels')
-                cy.get('.col-md-7').find('.mr-2')
-                .should('have.text', 'Singapore, Rendezvous Hotels')
+                cy.get('.col-md-7')
+                .find('h3')
+                .should('contain.text', 'Tria Hotel Istanbul Special')
+                cy.get('.col-md-7')
+                .find('.mr-2')
+                .should('have.text', 'Istanbul, Tria Hotel Istanbul Special')
+
             });
 
-            it('Validate title and text in "About Rendezvous Hotels"', () => {
+            it('Validate title and text in "About Tria Hotel"', () => {
+
+                const tria_desc = 'The Hotel Tria Istanbul is an intimate, style hotel, elegantly decorated and recently opened in Sultanahmet, boasting views of the Marmara Sea and the Asian Side. Crafted from a traditional Ottoman edifice, its wooden facade reflects the nobility and charm of historical Istanbul, whilst its deluxe and standard rooms are comfortably furnished with modern amenities. This special class hotel is a short walk from the most significant monuments of ancient imperial Byzantium, such as the splendid Hagia Sophia, Hippodrome and Basilica Cistern, as well as Ottoman masterpieces like Topkapi Palace and the Blue Mosque.'
+
                 cy.get('#description')
                 .find('h3')
-                .should('be.visible').and('have.text', 'About Rendezvous Hotels')
-                cy.get('#description')
-                .find('p[class="py-3"]').as('about_rendezvous')
                 .should('be.visible')
-                .invoke('text')
-                .then((desc) =>{
-                    cy.writeFile(txt_rendez, desc)
-                    cy.readFile(txt_rendez).then((about_rendezvous) =>{
-                        cy.get('@about_rendezvous').should('have.text', about_rendezvous)
-                    })
-                })
+                .and('have.text', 'About Tria Hotel Istanbul Special')
+                cy.get('#description')
+                .find('p[class="py-3"]')
+                .should('have.text', tria_desc)
                
             });
+
+                context('Getting a Standard Room', () => {
+                    it('Validate "Standard Room" at "Available Rooms" section', () => {
+                        cy.get('.sec__title_left')
+                        .should('have.text', 'Available Rooms')
+                        cy.get('.card.mb-4')
+                        .contains('Standard Room')
+                        .should('be.visible')
+                        .and('have.text', 'Standard Room')
+                    });
+
+                    it('Validate Standard Room Amenities at "Available Rooms" section', () => {
+                        cy.get('.card.mb-4')
+                        .find('.col-md-3').as('amenities')
+                        .find('strong')
+                        .eq(4)
+                       .should('have.text', 'Amenities')
+
+                       cy.get('@amenities')
+                       .find('.d-grid').eq(2).as('stand_amenities')
+                       cy.get('@stand_amenities')
+                       .find('.hotels_amenities')
+                       .should('have.length', 3)
+
+                       cy.color_check('.hotels_amenities', 'color', '00a624').log('**00a624 = Green**')
+
+                    });
+
+                    it.skip('Pick two Standard Rooms and validate price', () => {
+                        cy.get('select[name="room_quantity"]').eq(2)
+                        .select('2', {force:true})
+
+                        cy.get('.card.mb-4').eq(2)
+                        .find('.col-md-2').eq(1)
+                        .should('contain.text', 'Price')
+                        .should('eq', 'USD 990.00')
+                        cy.log('**Only the first price option works. If changed to second value option, nothing happens**')    
+                        
+                    });
+
+                    it('Click on "Book Now" to book a standar room', () => {
+                        cy.get('.col')
+                        .find('button[type="submit"]').eq(2)
+                        .should('contain.text', 'Book Now')
+                        .click({force:true})
+                        cy.get('.section-heading')
+                        .find('h2').first()
+                        .should('have.text', 'Hotel Booking')
+                        cy.url()
+                        .should('eq', 'https://phptravels.net/hotels/booking')
+        
+                    });
+
+                });
+
+
     });
  
 

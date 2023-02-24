@@ -73,7 +73,7 @@ Cypress.Commands.add("color_check_xpath", (element, color_attr, color_hex) => {
 });
 
 Cypress.Commands.add(
-    "singapore_prices_column",
+    "istanbul_prices_column",
     (equal, font_size_one, font_weight, font_size_two, value) => {
         cy.get(".col-4.p-2")
             .find(".card-price")
@@ -99,18 +99,11 @@ Cypress.Commands.add(
     }
 );
 
-Cypress.Commands.add('if',() =>{
-    if (rating.includes('1')) {
-        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_1',{force:true}).should('be.checked').and('include.value', '1')
-    } else if(rating.includes('2')){
-        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_2',{force:true}).should('be.checked').and('include.value', '2')
-    }else if (rating.includes('3')) {
-        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_3',{force:true}).should('be.checked').and('include.value', '3')
-    } else if(rating.includes('4')){
-        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_4',{force:true}).should('be.checked').and('include.value', '4')
-    } else if(rating.includes('5')){
-        cy.get('ul.list.remove_duplication').find('input[type="checkbox"]').check('.stars_5',{force:true}).should('be.checked').and('include.value', '5')
-    }
+Cypress.Commands.add('cookies',() =>{
+    Cypress.Cookies.defaults({
+        preserve: "ci_session",
+        preserve: "PHPSESSID"
+      })
 })
 
 /*
