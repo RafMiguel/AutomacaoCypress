@@ -28,7 +28,7 @@ describe("Validações PHPTravels", () => {
 
         it("Validar alerta: Type your last name", () => {
             cy.readFile(client)
-                .its("first_name")
+                .its("main.first_name")
                 .then((first_name) => {
                     cy.xpath(elDemo.campo_first_name).type(first_name, {
                         force: true,
@@ -44,7 +44,7 @@ describe("Validações PHPTravels", () => {
 
         it("Validar alerta: Type your business", () => {
             cy.readFile(client)
-                .its("last_name")
+                .its("main.last_name")
                 .then((last_name) => {
                     cy.xpath(elDemo.campo_last_name).type(last_name, {
                         force: true,
@@ -60,7 +60,7 @@ describe("Validações PHPTravels", () => {
 
         it("Validar alerta: Type your email", () => {
             cy.readFile(client)
-                .its("business")
+                .its("main.business")
                 .then((business) => {
                     cy.xpath(elDemo.campo_business).type(business, {
                         force: true,
@@ -88,14 +88,14 @@ describe("Validações PHPTravels", () => {
             cy.get(elDemo.titulo_form).invoke("text").should("contain", "Request Form");
             //Validar campos do formulário
             cy.readFile(client)
-                .its("first_name")
+                .its("main.first_name")
                 .then((first_name) => {
                     cy.xpath(elDemo.campo_first_name)
                         .should("have.attr", "placeholder", "First Name")
                         .type(first_name, { force: true });
                 });
             cy.readFile(client)
-                .its("last_name")
+                .its("main.last_name")
                 .then((last_name) => {
                     cy.xpath(elDemo.campo_last_name)
                         .should("have.attr", "placeholder", "Last Name")
@@ -103,14 +103,14 @@ describe("Validações PHPTravels", () => {
                 });
 
             cy.readFile(client)
-                .its("business")
+                .its("main.business")
                 .then((business) => {
                     cy.xpath(elDemo.campo_business)
                         .should("have.attr", "placeholder", "Business Name")
                         .type(business, { force: true });
                 });
             cy.readFile(client)
-                .its("email")
+                .its("main.email")
                 .then((email) => {
                     cy.xpath(elDemo.campo_email)
                         .should("have.attr", "placeholder", "Email")

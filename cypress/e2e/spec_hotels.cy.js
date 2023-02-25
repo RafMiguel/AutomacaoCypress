@@ -3,6 +3,7 @@
 import rgbHex from "rgb-hex";
 import { elHome, elHotel } from "../support/elementos";
 import txt from "../fixtures/estaticos.json"
+import client from "../fixtures/dados_cliente.json"
 import date from "../support/date"
 
 
@@ -32,7 +33,7 @@ describe("Book a Hotel - PHPTravels", () => {
             cy.rota(".net/hotels");
             cy.get(elHotel.search_container)
             .get('.row.g-1').first().as('search_field')
-            cy.clearCookies()
+            
         });
 
         it('Validate labels at search box', () => {
@@ -532,7 +533,7 @@ before(() => {
     cy.readFile('cypress/validation/results/hotel/saved_hotel_url.txt').should('exist').then((current_url) =>{
         cy.visit(current_url)
     })
-    cy.cookies()
+    
 })
     context('Details page - Tria Hotel', () => {
         
@@ -591,7 +592,7 @@ before(() => {
 
                     });
 
-                    it.skip('Pick two Standard Rooms and validate price', () => {
+                    it('Pick two Standard Rooms and validate price', () => {
                         cy.get('select[name="room_quantity"]').eq(2)
                         .select('2', {force:true})
 
@@ -614,6 +615,77 @@ before(() => {
                         cy.url()
                         .should('eq', 'https://phptravels.net/hotels/booking')
         
+                    });
+
+                    context('Filling Form', () => {
+                        it('Checking that the Hotel name and Room type is the same that we choose', () => {
+                            cy.get('.d-flex > div > .card-title').should('have.text', 'Tria Hotel Istanbul Special').and('have.css', 'color', 'rgb(255, 255, 255)')
+                            cy.get('.mt-2').should('have.text', 'Standard Room')
+                        });
+                        it('Filling in - Your Personal Information', () => {
+
+                            cy.get('.title').first().should('have.text', 'Your Personal Information').and('have.css', 'font-size', '18px')
+                            cy.get('.contact-form-action').find('input[name="firstname"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'First Name').type(client.main.first_name, {force:true})
+                            cy.get('.contact-form-action').find('input[name="lastname"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'Last Name').type(client.main.last_name, {force:true})
+                            cy.get('.contact-form-action').find('input[name="email"]').should('have.attr', 'type', 'email').and('have.attr', 'placeholder', 'Email').type(client.main.email, {force:true})
+                            cy.get('.contact-form-action').find('input[name="address"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'Address').type(client.main.address, {force:true})
+                            cy.get('.input-items.w-auto').find('select[name="country_code"]').select(client.main.country,{force:true}).log('**United Kingdom**')
+                            cy.get('.input-items.w-auto').find('select[name="nationality"]').select(client.main.country, {force:true}).log('**United Kingdom**')
+                        });
+
+                        it('Filling in - Travellers Information', () => {
+                            
+                            cy.get('.title').eq(1).should('have.text', 'Travellers Information').and('have.css', 'font-size', '18px')
+                            cy.get('.card-header').find('strong').should('contain.text', 'Adult ').and('have.length', 3).and('have.css', 'color', 'rgb(16, 98, 254)').log('**Blue**')
+
+                            cy.get('.card-header').contains('1').should('contain.text', 'Traveller 1')
+                            cy.get('.card-body').find('input[name="firstname_1"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'First Name').type(client.main.first_name, {force:true})
+                            cy.get('.card-body').find('input[name="lastname_1"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'Last Name').type(client.main.last_name, {force:true})
+
+                            cy.get('.card-header').contains('2').should('contain.text', 'Traveller 2')
+                            cy.get('.card-body').find('select[name="title_2"]').select(client.traveller_1.status, {force:true})
+                            cy.get('.card-body').find('input[name="firstname_2"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'First Name').type(client.traveller_1.first_name, {force:true})
+                            cy.get('.card-body').find('input[name="lastname_2"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'Last Name').type(client.traveller_1.last_name, {force:true})
+
+                            cy.get('.card-header').contains('3').should('contain.text', 'Traveller 3')
+                            cy.get('.card-body').find('select[name="title_3"]').select(client.traveller_2.status, {force:true})
+                          //  cy.get('.card-body').find('input[name="firstname_3"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'First Name').type(client.traveller_2.first_name, {force:true})
+                            cy.get('.card-body').find('input[name="lastname_3"]').should('have.attr', 'type', 'text').and('have.attr', 'placeholder', 'Last Name').type(client.traveller_2.last_name, {force:true})
+
+                        });
+
+                        it('Picking Payment Method: Pay Later', () => {
+
+                            cy.get('.title').eq(2).should('have.text', 'Payment Method').and('have.css', 'font-size', '18px')
+                            cy.get('.gateway_paypal').find('input[type="radio"]').check({force:true}).should('be.checked').and('have.value', 'paypal')
+                            cy.get('.gateway_paypal').find('strong').should('have.text', 'paypal')
+                            cy.get('.gateway_paypal').find('img').should('have.attr', 'alt', 'paypal')
+
+                            /*
+                            cy.get('.gateway_pay-later').find('input[type="radio"]').check({force:true}).should('be.checked').and('have.value', 'pay-later')
+                            cy.get('.gateway_pay-later').find('strong').should('have.text', 'pay later')
+                            cy.get('.gateway_pay-later').find('img').should('have.attr', 'alt', 'pay-later')
+*/
+                        });
+
+                        it('Validate checkbox and button', () => {
+                            cy.get('.custom-checkbox').find('input[type="checkbox"]').as('checkbox')
+                            cy.get('@checkbox').should('not.be.checked')
+                            cy.get('#booking').invoke('css', 'background').then((color) =>{
+                                cy.log(color)
+                                cy.get('#booking').should('have.attr', 'disabled')
+                                expect(color).to.deep.includes('rgb(238, 238, 238)', 'Blank color (button disabled)')
+                            })
+                            cy.get('@checkbox').check({force:true}).should('be.checked')
+                            cy.get('#booking').invoke('css', 'background-color').then((color) =>{
+                                cy.log(color)
+                                    cy.get('#booking').should('not.have.attr', 'disabled')
+                                    cy.get('#booking').click({force:true}).invoke('attr', 'required').then((req) =>{
+                                        cy.log(req)
+                                    })
+                                })
+                            
+                        });
                     });
 
                 });

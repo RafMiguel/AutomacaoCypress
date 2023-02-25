@@ -22,3 +22,4 @@ export class date {
 }
 
 export default new date();
+

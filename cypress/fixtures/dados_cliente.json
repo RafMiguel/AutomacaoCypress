@@ -1,10 +1,36 @@
 {
+  "main":{
+
   "first_name": "Raphael",
   "last_name": "Kenway",
   "business": "Roach Enterprises",
-  "email": "roach.web@web.com"
+  "email": "roach.web@web.com",
+  "phone": "+44 7552596557",
+  "address": "36 Queen St, Cardiff",
+  "country": "GB"
 
+  },
+
+  "traveller_1": {
+
+"status": "MISS",
+"first_name": "Katrina",
+"last_name": "Marie"
+
+  },
+
+  "traveller_2": {
+
+    "status": "MRS",
+    "first_name": "Koraline",
+    "last_name": "Konstantinopla"
+  }
 }
+
+
+
+  
+
 
 
 
